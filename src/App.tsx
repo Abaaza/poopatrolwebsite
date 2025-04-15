@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
 
 // Import your new pages
-import ServicesPage from "./components/servicespage";
+import ServicesPage from "./components/ServicesPage";
 import Terms from "./components/Terms";
 import FreeQuotePage from "./components/FreeQuotePage";
 import BookNow from "./components/BookNow";
