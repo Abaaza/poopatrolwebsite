@@ -1,0 +1,24 @@
+/* App.css (cleaned up) */
+
+/* 1) Keep if you want to ensure horizontal scroll never appears */
+body {
+  overflow-x: hidden;
+}
+
+/* 2) If you want to keep the default box-sizing, 
+   but note that Tailwind Preflight already does it: */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 3) Optional, keep if you want a custom global no-hover style. */
+video {
+  transition: none !important;
+}
+
+.no-hover-effect:hover {
+  filter: none !important;
+  opacity: 1 !important;
+}
