@@ -36,11 +36,12 @@ const NavBar: React.FC = () => {
       bg="brand.lightGreen"
       color="brand.darkBrown"
       boxShadow="lg"
-      // Sticky/fixed top
       position="fixed"
       top={0}
       w="100%"
       zIndex={1000}
+      // Give the NavBar a fixed height
+      h={{ base: "60px", md: "75px" }}
     >
       <Flex
         align="center"
@@ -49,6 +50,8 @@ const NavBar: React.FC = () => {
         mx="auto"
         py={2}
         px={4}
+        // Ensure the content fits within the fixed height
+        h="100%"
       >
         {/* Logo */}
         <Image
@@ -57,7 +60,6 @@ const NavBar: React.FC = () => {
           w={isMobile ? "120px" : "150px"}
           h="auto"
           cursor="pointer"
-          // If you want to navigate using React Router, use onClick + navigate or wrap with RouterLink
           onClick={() => (window.location.href = "/")}
         />
 

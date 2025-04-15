@@ -163,13 +163,7 @@ const FreeQuotePage: React.FC = () => {
   const readOnlyStep1 = estimateFetched;
 
   return (
-    <Box
-      minH="100vh"
-      w="full"
-      bgGradient="linear(to-b, brand.lightGreen, brand.brightGreen)"
-      py={10}
-      px={4}
-    >
+    <Box minH="100vh" w="full" py={10} px={4}>
       <Box maxW="3xl" mx="auto">
         {/* Card: Step 1 */}
         <Box
