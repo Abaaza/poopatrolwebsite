@@ -11,8 +11,9 @@ import {
   useBreakpointValue,
   VStack,
   Button,
+  Divider,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom"; // <-- import Link from react-router
+import { Link as RouterLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import logo from "../assets/logopoopatrol.jpg";
 
@@ -20,7 +21,6 @@ const NavBar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  // Now each nav item has a "path" to a route
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Free Quote", path: "/free-quote" },
@@ -33,9 +33,10 @@ const NavBar: React.FC = () => {
   return (
     <Box
       as="header"
-      bg="#d7e5b4"
-      color="#522a06"
-      p={4}
+      bg="brand.lightGreen"
+      color="brand.darkBrown"
+      boxShadow="lg"
+      // Sticky/fixed top
       position="fixed"
       top={0}
       w="100%"
@@ -46,38 +47,42 @@ const NavBar: React.FC = () => {
         justify="space-between"
         maxW="7xl"
         mx="auto"
-        position="relative"
+        py={2}
+        px={4}
       >
-        {/* Logo click -> go to homepage */}
+        {/* Logo */}
         <Image
           src={logo}
           alt="Poo Patrol Logo"
           w={isMobile ? "120px" : "150px"}
           h="auto"
           cursor="pointer"
+          // If you want to navigate using React Router, use onClick + navigate or wrap with RouterLink
           onClick={() => (window.location.href = "/")}
         />
 
         {isMobile && (
           <IconButton
             icon={isOpen ? <FaTimes /> : <FaBars />}
-            aria-label="Open Menu"
+            aria-label="Toggle Menu"
             variant="ghost"
-            color="white"
             onClick={isOpen ? onClose : onOpen}
+            transition="all 0.3s ease"
+            _hover={{ bg: "brand.golden" }}
           />
         )}
 
         {/* Desktop Menu */}
         {!isMobile && (
-          <HStack spacing={8}>
+          <HStack as="nav" spacing={8}>
             {navItems.map((item) => (
               <ChakraLink
                 key={item.path}
                 as={RouterLink}
                 to={item.path}
+                fontWeight="semibold"
+                transition="color 0.3s ease"
                 _hover={{ textDecoration: "none", color: "brand.golden" }}
-                fontWeight="bold"
               >
                 {item.label}
               </ChakraLink>
@@ -86,9 +91,9 @@ const NavBar: React.FC = () => {
         )}
       </Flex>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu (collapsible) */}
       {isMobile && isOpen && (
-        <Box bg="#fff" mt={4} px={4} py={2} rounded="md">
+        <Box bg="white" shadow="md" px={4} py={2}>
           <VStack align="start" spacing={4}>
             {navItems.map((item) => (
               <Button
@@ -98,6 +103,8 @@ const NavBar: React.FC = () => {
                 variant="ghost"
                 w="full"
                 justifyContent="flex-start"
+                fontWeight="bold"
+                color="brand.darkBrown"
                 _hover={{ bg: "brand.golden", color: "black" }}
                 onClick={onClose}
               >
@@ -107,6 +114,7 @@ const NavBar: React.FC = () => {
           </VStack>
         </Box>
       )}
+      <Divider borderColor="brand.darkBrown" />
     </Box>
   );
 };

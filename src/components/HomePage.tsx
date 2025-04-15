@@ -1,8 +1,7 @@
+// src/components/HomePage.tsx
 import React from "react";
 import {
   Box,
-  ChakraProvider,
-  extendTheme,
   Flex,
   Text,
   Heading,
@@ -10,53 +9,36 @@ import {
   Image,
   Container,
   SimpleGrid,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
-
-// 1) Import `Link` from React Router, then rename it to RouterLink
 import { Link as RouterLink } from "react-router-dom";
 
-// Brand theme
-const theme = extendTheme({
-  colors: {
-    brand: {
-      darkBrown: "#522a06",
-      lightGreen: "#d7e5b4",
-      golden: "#e5ab30",
-      brightGreen: "#8bc42e",
-    },
-  },
-});
-
-// Hover transitions
 const transitionStyles = {
   transition: "all 0.3s ease",
   _hover: {
     transform: "translateY(-2px)",
-    boxShadow: "xl",
+    boxShadow: "lg",
   },
 };
 
 const HomePage: React.FC = () => {
   return (
-    // If your entire app uses ChakraProvider at the root (e.g. in App.tsx),
-    // you can remove this extra ChakraProvider wrapper
-    <ChakraProvider theme={theme}>
+    <>
       {/* HERO / HOME SECTION */}
       <Box
         id="home"
         as="section"
+        position="relative"
         bg="brand.lightGreen"
-        py={{ base: 20, md: 32 }}
+        py={{ base: 20, md: 40 }}
         textAlign="center"
-        // Optional background image for a cleaner, modern hero
-        backgroundImage="url('https://via.placeholder.com/1200x800')"
+        backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/55-12312321312312.png')"
         backgroundSize="cover"
-        backgroundPosition="center"
+        backgroundPosition="cente r"
         backgroundRepeat="no-repeat"
         color="brand.darkBrown"
-        position="relative"
       >
-        {/* Overlay to dim the background image a bit */}
+        {/* Semi-transparent overlay */}
         <Box
           position="absolute"
           inset="0"
@@ -64,13 +46,18 @@ const HomePage: React.FC = () => {
           zIndex={0}
         />
         <Container maxW="7xl" zIndex={1} position="relative">
-          <Heading as="h1" size="2xl" mb={4}>
+          <Heading
+            as="h1"
+            size="2xl"
+            mt={12}
+            mb={4}
+            textShadow="1px 1px rgba(0,0,0,0.2)"
+          >
             LET US HANDLE THE DIRTY WORK!
           </Heading>
           <Text fontSize="xl" maxW="600px" mx="auto" mb={6}>
             We handle the mess so you can spend more time with your best friend.
           </Text>
-          {/* CTA Button */}
           <Button
             as={RouterLink}
             to="/free-quote"
@@ -91,6 +78,7 @@ const HomePage: React.FC = () => {
         bg="brand.brightGreen"
         color="white"
         textAlign="center"
+        shadow="md"
       >
         <Container maxW="7xl">
           <Heading as="h3" size="xl" mb={4}>
@@ -125,11 +113,7 @@ const HomePage: React.FC = () => {
             align="center"
             justify="center"
           >
-            <Box
-              flex="1"
-              textAlign={{ base: "center", md: "left" }}
-              order={{ base: 2, md: 1 }}
-            >
+            <Box flex="1" textAlign={{ base: "center", md: "left" }}>
               <Heading as="h3" size="lg" mb={4} color="brand.darkBrown">
                 About Poo Patrol
               </Heading>
@@ -152,9 +136,10 @@ const HomePage: React.FC = () => {
                 Learn More
               </Button>
             </Box>
-            <Box flex="1" order={{ base: 1, md: 2 }}>
+
+            <Box flex="1">
               <Image
-                src="https://via.placeholder.com/600x400"
+                src="https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/Pet-Waste-Removal-Business-poop-bag.jpg"
                 alt="Poo Patrol Team"
                 rounded="md"
                 mx="auto"
@@ -178,7 +163,6 @@ const HomePage: React.FC = () => {
             Our Services
           </Heading>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-            {/* Residential Cleanup */}
             <Box
               bg="brand.lightGreen"
               p={6}
@@ -204,7 +188,6 @@ const HomePage: React.FC = () => {
               </Button>
             </Box>
 
-            {/* Commercial Services */}
             <Box
               bg="brand.lightGreen"
               p={6}
@@ -230,7 +213,6 @@ const HomePage: React.FC = () => {
               </Button>
             </Box>
 
-            {/* Deodorizing & Sanitizing */}
             <Box
               bg="brand.lightGreen"
               p={6}
@@ -258,7 +240,7 @@ const HomePage: React.FC = () => {
           </SimpleGrid>
         </Container>
       </Box>
-    </ChakraProvider>
+    </>
   );
 };
 
