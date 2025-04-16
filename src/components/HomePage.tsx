@@ -30,7 +30,7 @@ const HomePage: React.FC = () => {
         as="section"
         position="relative"
         bg="brand.lightGreen"
-        py={{ base: 20, md: 40 }}
+        py={{ base: 20, md: 80 }}
         textAlign="center"
         backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/55-12312321312312.png')"
         backgroundSize="cover"

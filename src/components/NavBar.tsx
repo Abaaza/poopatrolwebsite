@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
       w="100%"
       zIndex={1000}
       // Give the NavBar a fixed height
-      h={{ base: "60px", md: "75px" }}
+      h={{ base: "80px", md: "100px" }}
     >
       <Flex
         align="center"
