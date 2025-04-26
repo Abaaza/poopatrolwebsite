@@ -1,3 +1,4 @@
+// src/components/Terms.tsx
 import React from "react";
 import {
   Box,
@@ -5,12 +6,11 @@ import {
   Container,
   Heading,
   Text,
-  extendTheme,
-  ListItem,
   UnorderedList,
+  ListItem,
+  extendTheme,
 } from "@chakra-ui/react";
 
-// 1) RE-USE OR EXTEND YOUR EXISTING THEME
 const theme = extendTheme({
   colors: {
     brand: {
@@ -39,165 +39,147 @@ const Terms: React.FC = () => {
           borderRadius="md"
           boxShadow="md"
         >
-          {/* MAIN HEADING */}
           <Heading as="h1" size="xl" color="brand.darkBrown" mb={4}>
-            Poo Patrol — Terms of Service
+            Poo Patrol – Terms of Service
           </Heading>
           <Text fontSize="sm" color="gray.500" mb={6}>
-            Revised 2/12/24
+            Revised&nbsp;2/12/24
           </Text>
 
-          {/* INTRO */}
-          <Text mb={4}>
-            Welcome to Poo Patrol — where we handle the doo, so you don’t have
-            to! These tail-waggin&apos; Terms of Service (&quot;Terms&quot;) lay
-            out how we keep your yard clean, fresh, and paws-itively poop-free.
-            By signing up for our Services, you&apos;re giving us the green
-            light to scoop the poop, one paw-print at a time.
+          {/* Intro */}
+          <Text mb={6}>
+            Please read these Terms of Service (“Terms”) carefully before using
+            the pet-waste removal services (“Services”) provided by Poo Patrol
+            (“we,” “us,” or “our”). By subscribing to or using our Services, you
+            agree to be bound by these Terms.
           </Text>
 
-          {/* 1. What We Do (and Doo-Doo Best) */}
+          {/* 1 Services Offered */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            1. What We Do (and Doo-Doo Best)
+            1.&nbsp;Services Offered
           </Heading>
-          <Text mb={4}>
-            Poo Patrol fetches up dog waste from both residential and commercial
-            properties with the following offerings:
+          <Text mb={2}>
+            Poo Patrol provides residential and commercial dog-waste removal
+            services including:
           </Text>
-          <UnorderedList mb={4} ml={6}>
-            <ListItem>One-Time “Oh No!” Cleanups</ListItem>
-            <ListItem>
-              Weekly &amp; Bi-Weekly “Keep It Fresh” Cleanings
-            </ListItem>
-            <ListItem>
-              Monthly “Tail-Waggin’ Clean” Subscription Packages
-            </ListItem>
+          <UnorderedList ml={6} mb={4}>
+            <ListItem>One-Time Cleanups</ListItem>
+            <ListItem>Weekly & Bi-Weekly Cleanings</ListItem>
+            <ListItem>Monthly Subscription Packages</ListItem>
           </UnorderedList>
           <Text mb={6}>
-            Yards up to 1/8 acre are included in our base pricing. Bigger spaces
-            may require a bit more scratch (additional fees).
+            Pricing is based on standard yard sizes (up to&nbsp;⅛ acre). Larger
+            properties may incur additional charges.
           </Text>
 
-          {/* 2. Gimme Shelter (and Access!) */}
+          {/* 2 Access */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            2. Gimme Shelter (and Access!)
+            2.&nbsp;Access to Your Property
           </Heading>
           <Text mb={6}>
-            Your pups might be protective, but we need safe, open access to do
-            our job. If we encounter locked gates, frosty latches, or aggressive
-            doggos, we’ll have to skip that visit — but charges will still
-            apply. Need us to come back? A $5 tail-chasing fee applies. Don’t
-            worry — all the doo will be scooped up during your next scheduled
-            cleanup!
+            You are responsible for ensuring safe and unobstructed access to the
+            area requiring service. If we cannot access your yard due to locked
+            gates, aggressive dogs, or unsafe conditions, the visit will be
+            skipped and charges will still apply. A&nbsp;$5 fee may be charged
+            for return visits at your request.
           </Text>
 
-          {/* 3. Rain, Snow, or Dog Day Afternoon */}
+          {/* 3 Weather */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            3. Rain, Snow, or Dog Day Afternoon
+            3.&nbsp;Weather Conditions
           </Heading>
           <Text mb={6}>
-            We’re out there in the drizzle and cold — but if the weather’s ruff
-            (lightning, snow piles, or heatwaves), we’ll have to skip for
-            safety. No refunds for missed visits; we’ll catch all the extra poop
-            next time around.
+            We operate in most weather conditions but may skip service during
+            extreme weather such as heavy rain, snow, or unsafe heat. Missed
+            visits due to weather are not refunded; service will resume on the
+            next scheduled visit.
           </Text>
 
-          {/* 4. Holiday Howl-idays */}
+          {/* 4 Holidays */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            4. Holiday Howl-idays
+            4.&nbsp;Holidays
           </Heading>
-          <Text mb={4}>
-            We give our scoopers a break on the following holidays:
+          <Text mb={2}>
+            Poo Patrol does not operate on the following major holidays:
           </Text>
-          <UnorderedList mb={4} ml={6}>
+          <UnorderedList ml={6} mb={6}>
             <ListItem>New Year’s Day</ListItem>
             <ListItem>Independence Day</ListItem>
             <ListItem>Thanksgiving Day</ListItem>
             <ListItem>Christmas Day</ListItem>
           </UnorderedList>
           <Text mb={6}>
-            If your regular cleanup day lands on one of these, we’ll resume the
-            next week — no refunds, but all the same poop gets scooped.
+            If your service day falls on a listed holiday, we will resume
+            service the following week. No refunds will be issued.
           </Text>
 
-          {/* 5. Payment Time (Time to Fetch the Bill) */}
+          {/* 5 Billing */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            5. Payment Time (Time to Fetch the Bill)
-          </Heading>
-          <Text mb={2}>
-            <strong>Subscriptions:</strong> Billed monthly on the 1st. Pay by
-            the 3rd to avoid a bark of interruption.
-          </Text>
-          <Text mb={2}>
-            <strong>One-Time Cleanups:</strong> Billed after service and due
-            within 24 hours.
-          </Text>
-          <Text mb={2}>
-            <strong>Late Payments:</strong> $10 fee. If an account gets 30+ days
-            behind, we may paw it over to collections.
-          </Text>
-          <Text mb={6}>
-            Woof at us if you need a different payment arrangement before your
-            scoop day!
-          </Text>
-
-          {/* 6. Yard Shenanigans */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            6. Yard Shenanigans
+            5.&nbsp;Billing and Payment
           </Heading>
           <Text mb={6}>
-            We’ll do our best to find every little landmine, but if your grass
-            is wild, leaves are piled, or your yard’s a jungle — we might miss a
-            few. Keep things tidy, and we’ll get everything cleaned up on our
-            next visit. Spot a miss? Give us a woof!
+            Monthly subscription payments are billed on the&nbsp;1st of each
+            month and must be received by the&nbsp;3rd to avoid service
+            interruption. A&nbsp;late fee of&nbsp;$10 may apply. One-time
+            cleanings are billed after service and due within&nbsp;24 hours.
+            Accounts unpaid after&nbsp;30 days may be referred to collections.
           </Text>
 
-          {/* 7. Extra Charges for Extra Ruff Work */}
+          {/* 6 Yard Conditions */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            7. Extra Charges for Extra Ruff Work
+            6.&nbsp;Yard Conditions
           </Heading>
-          <UnorderedList mb={6} ml={6}>
-            <ListItem>Decks, patios, concrete cleanup: $5/visit</ListItem>
-            <ListItem>Return visits due to access issues: $5</ListItem>
-            <ListItem>Waiting over 10 minutes: $5</ListItem>
+          <Text mb={6}>
+            Excessive leaves, tall grass, or debris may hinder our ability to
+            locate all waste. Maintain your yard regularly; if conditions are
+            improved by the next visit, we will address any missed waste.
+          </Text>
+
+          {/* 7 Additional Fees */}
+          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
+            7.&nbsp;Additional Fees
+          </Heading>
+          <UnorderedList ml={6} mb={6}>
+            <ListItem>
+              Cleaning decks, patios, or concrete – $5 per visit
+            </ListItem>
+            <ListItem>Return visits due to access issues – $5</ListItem>
+            <ListItem>
+              Waiting time exceeding five minutes – $5 per visit
+            </ListItem>
           </UnorderedList>
 
-          {/* 8. Privacy – We Don’t Snoof Your Stuff */}
+          {/* 8 Privacy */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            8. Privacy – We Don’t Snoof Your Stuff
+            8.&nbsp;Privacy Policy
           </Heading>
           <Text mb={6}>
-            Your info is safe with us. We only collect what we need to provide
-            service and will never sell or share your data unless it’s needed to
-            process payments or required by law.
+            We collect and use personal information solely to provide and
+            improve our Services. We do not sell or share your information with
+            third parties except as necessary to process payments or comply with
+            legal obligations.
           </Text>
 
-          {/* 9. We May Update These Rules */}
+          {/* 9 Revisions */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            9. We May Update These Rules
+            9.&nbsp;Revisions to Terms
           </Heading>
           <Text mb={6}>
-            Sometimes we need to tweak these Terms like a chew toy. Updates will
-            be posted on our website and effective immediately. Using our
-            Services means you accept any changes.
+            We may update these Terms from time to time. Changes will be posted
+            on our website and become effective immediately. Continued use of
+            our Services constitutes acceptance of any revised Terms.
           </Text>
 
-          {/* 10. Woof at Us! */}
+          {/* 10 Contact */}
           <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            10. Woof at Us!
+            10.&nbsp;Contact Us
           </Heading>
-          <Text mb={4}>
-            Have questions? Something smell funny (and not in the yard)? Reach
-            out anytime:
-          </Text>
           <Text mb={8} fontWeight="bold">
             📧 Poopatrolcleanup@gmail.com
           </Text>
 
-          {/* SIGN-OFF */}
           <Text fontWeight="bold">
-            Thanks for choosing Poo Patrol — where we doo the dirty work, so you
-            can kick back and enjoy your yard! 🐾
+            Thank you for choosing Poo Patrol — We Scoop, You Relax!
           </Text>
         </Container>
       </Box>
