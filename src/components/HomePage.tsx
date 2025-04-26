@@ -25,6 +25,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       {/* HERO / HOME SECTION */}
+
       <Box
         id="home"
         as="section"
@@ -32,7 +33,7 @@ const HomePage: React.FC = () => {
         bg="brand.lightGreen"
         py={{ base: 20, md: 80 }}
         textAlign="center"
-        backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/55-12312321312312.png')"
+        backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/a-heartwarming-lifestyle-advertisement-f_BwLoOuTVR667ymeos6zUrg_zLLLMKBUQByBygPocx7piw+(1).png')"
         backgroundSize="cover"
         backgroundPosition="cente r"
         backgroundRepeat="no-repeat"
@@ -42,7 +43,7 @@ const HomePage: React.FC = () => {
         <Box
           position="absolute"
           inset="0"
-          bg="rgba(255,255,255,0.6)"
+          bg="rgba(255,255,255,0.3)"
           zIndex={0}
         />
         <Container maxW="7xl" zIndex={1} position="relative">
