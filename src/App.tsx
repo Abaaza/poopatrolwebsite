@@ -14,11 +14,13 @@ import Terms from "./components/Terms";
 import Residential from "./components/Residential";
 import Commercial from "./components/Commercial";
 import Deodorizing from "./components/Deodorizing";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <ChakraProvider theme={customTheme}>
       <BrowserRouter>
+        <ScrollToTop />
         {/* Fixed NavBar at the top */}
         <NavBar />
 
