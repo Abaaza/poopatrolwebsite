@@ -164,7 +164,7 @@ const FreeQuotePage: React.FC = () => {
 
   return (
     <Box minH="100vh" w="full" py={10} px={4}>
-      <Box maxW="3xl" mx="auto">
+      <Box maxW="6xl" mx="auto">
         {/* Card: Step 1 */}
         <Box
           bg="white"

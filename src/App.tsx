@@ -11,6 +11,9 @@ import FreeQuotePage from "./components/FreeQuotePage";
 import BookNow from "./components/BookNow";
 import AboutUs from "./components/AboutUs";
 import Terms from "./components/Terms";
+import Residential from "./components/Residential";
+import Commercial from "./components/Commercial";
+import Deodorizing from "./components/Deodorizing";
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
             <Route path="/book-now" element={<BookNow />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/residential" element={<Residential />} />
+            <Route path="/commercial" element={<Commercial />} />
+            <Route path="/deodorizing" element={<Deodorizing />} />
           </Routes>
         </Box>
 

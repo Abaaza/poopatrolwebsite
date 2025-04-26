@@ -23,13 +23,7 @@ const theme = extendTheme({
 const AboutUs: React.FC = () => {
   return (
     <ChakraProvider theme={theme}>
-      <Box
-        bg="brand.lightGreen"
-        py={{ base: 10, md: 20 }}
-        minH="100vh"
-        display="flex"
-        alignItems="center"
-      >
+      <Box bg="brand.lightGreen" py={{ base: 10, md: 20 }} display="flex">
         <Container
           maxW="160vh"
           bg="white"

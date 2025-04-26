@@ -31,10 +31,10 @@ const Footer: React.FC = () => {
             <Heading as="h5" size="md">
               Poo Patrol
             </Heading>
-            <Text>1234 Main St</Text>
-            <Text>Somewhere, USA 99999</Text>
-            <Text>Phone: 999-999-9999</Text>
-            <Text>Email: info@poopatrol.com</Text>
+            <Text>9643 Reseda Blvd.</Text>
+            <Text>Northridge, CA 91324</Text>
+            <Text>Phone: 818-877-3304</Text>
+            <Text>Email: poopatrolcleanup@gmail.com</Text>
           </Stack>
 
           {/* Right Column - Quick Links */}
@@ -50,6 +50,9 @@ const Footer: React.FC = () => {
                 <Link href="#services" _hover={{ textDecoration: "none" }}>
                   Commercial
                 </Link>
+                <Link href="#services" _hover={{ textDecoration: "none" }}>
+                  Deodorizing
+                </Link>
               </Stack>
             </Box>
             <Box>
@@ -58,16 +61,16 @@ const Footer: React.FC = () => {
               </Heading>
               <Stack spacing={2}>
                 <Link href="#faq" _hover={{ textDecoration: "none" }}>
-                  FAQ
+                  Book Now
                 </Link>
                 <Link href="#" _hover={{ textDecoration: "none" }}>
-                  Blog
+                  Free Quote
                 </Link>
                 <Link href="#" _hover={{ textDecoration: "none" }}>
-                  Careers
+                  Services
                 </Link>
                 <Link href="#" _hover={{ textDecoration: "none" }}>
-                  Contact
+                  About Us
                 </Link>
               </Stack>
             </Box>
