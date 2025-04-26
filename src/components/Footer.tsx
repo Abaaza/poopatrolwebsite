@@ -8,16 +8,12 @@ import {
   Heading,
   Link,
   SimpleGrid,
-  Divider,
 } from "@chakra-ui/react";
 
 const Footer: React.FC = () => {
   return (
-    <Box as="footer" bg="brand.lightGreen" color="brand.darkBrown" mt={16}>
-      {/* Top divider for separation */}
-      <Divider borderColor="brand.darkBrown" />
-
-      {/* Footer container with some shadow if you want a “floating” look */}
+    <Box as="footer" bg="brand.lightGreen" color="brand.darkBrown">
+      {/* Footer container */}
       <Box py={8} boxShadow="inner">
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -44,13 +40,13 @@ const Footer: React.FC = () => {
                 Services
               </Heading>
               <Stack spacing={2}>
-                <Link href="#services" _hover={{ textDecoration: "none" }}>
+                <Link href="/residential" _hover={{ textDecoration: "none" }}>
                   Residential
                 </Link>
-                <Link href="#services" _hover={{ textDecoration: "none" }}>
+                <Link href="/commercial" _hover={{ textDecoration: "none" }}>
                   Commercial
                 </Link>
-                <Link href="#services" _hover={{ textDecoration: "none" }}>
+                <Link href="/deodorizing" _hover={{ textDecoration: "none" }}>
                   Deodorizing
                 </Link>
               </Stack>
@@ -60,22 +56,24 @@ const Footer: React.FC = () => {
                 Resources
               </Heading>
               <Stack spacing={2}>
-                <Link href="#faq" _hover={{ textDecoration: "none" }}>
+                <Link href="/book-now" _hover={{ textDecoration: "none" }}>
                   Book Now
                 </Link>
-                <Link href="#" _hover={{ textDecoration: "none" }}>
+                <Link href="/free-quote" _hover={{ textDecoration: "none" }}>
                   Free Quote
                 </Link>
-                <Link href="#" _hover={{ textDecoration: "none" }}>
+                <Link href="/services" _hover={{ textDecoration: "none" }}>
                   Services
                 </Link>
-                <Link href="#" _hover={{ textDecoration: "none" }}>
+                <Link href="/about-us" _hover={{ textDecoration: "none" }}>
                   About Us
                 </Link>
               </Stack>
             </Box>
           </SimpleGrid>
         </Flex>
+
+        {/* Bottom text */}
         <Text textAlign="center" mt={8} fontWeight="semibold">
           © 2025 Poo Patrol • Your #1 Dog Waste Removal Service.
         </Text>
