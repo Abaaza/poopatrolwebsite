@@ -33,14 +33,14 @@ const Terms: React.FC = () => {
         alignItems="center"
       >
         <Container
-          maxW="container.md"
+          maxW="160vh"
           bg="white"
           p={{ base: 6, md: 10 }}
           borderRadius="md"
           boxShadow="md"
         >
           <Heading as="h1" size="xl" color="brand.darkBrown" mb={4}>
-            Poo Patrol – Terms of Service
+            Terms of Service
           </Heading>
           <Text fontSize="sm" color="gray.500" mb={6}>
             Revised&nbsp;2/12/24
