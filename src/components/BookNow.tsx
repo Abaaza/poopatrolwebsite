@@ -176,13 +176,9 @@ const BookNow: React.FC = () => {
           _hover={{ transform: "translateY(-2px)" }}
         >
           <Heading as="h1" size="lg" mb={2}>
-            Get Your Free Quote
+            Book Now
           </Heading>
-          <Text fontSize="md" color="gray.600" mb={6}>
-            Fill out the first section to see an instant estimate. Once you
-            click “Get Estimate,” a second section will appear for final
-            sign-up!
-          </Text>
+
 
           {/* STEP 1: Yard Details */}
           <VStack align="start" spacing={5}>
