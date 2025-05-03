@@ -8,12 +8,13 @@ import {
   Heading,
   Link,
   SimpleGrid,
+  Icon,          // ← add this
 } from "@chakra-ui/react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
     <Box as="footer" bg="brand.lightGreen" color="brand.darkBrown">
-      {/* Footer container */}
       <Box py={8} boxShadow="inner">
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -27,13 +28,13 @@ const Footer: React.FC = () => {
             <Heading as="h5" size="md">
               Poo Patrol
             </Heading>
-            <Text>9643 Reseda Blvd.</Text>
+            <Text>9643&nbsp;Reseda&nbsp;Blvd.</Text>
             <Text>Northridge, CA 91324</Text>
             <Text>Phone: 818-877-3304</Text>
             <Text>Email: info@poopatrolcleaning.com</Text>
           </Stack>
 
-          {/* Right Column - Quick Links */}
+          {/* Right Column */}
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
             <Box>
               <Heading as="h5" size="md" mb={4}>
@@ -73,9 +74,27 @@ const Footer: React.FC = () => {
           </SimpleGrid>
         </Flex>
 
-        {/* Bottom text */}
+        {/* Social icons */}
+        <Stack direction="row" spacing={4} justify="center" mt={6}>
+          <Link
+            href="https://www.facebook.com/people/Poopatrol/61575697444609/"
+            isExternal
+            aria-label="Facebook"
+          >
+            <Icon as={FaFacebook} w={6} h={6} />
+          </Link>
+          <Link
+            href="https://www.instagram.com/poopatrols/?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr"
+            isExternal
+            aria-label="Instagram"
+          >
+            <Icon as={FaInstagram} w={6} h={6} />
+          </Link>
+        </Stack>
+
+        {/* Copyright */}
         <Text textAlign="center" mt={8} fontWeight="semibold">
-          © 2025 Poo Patrol • Your #1 Dog Waste Removal Service.
+          © 2025 Poo Patrol • Your #1 Dog-Waste Removal Service.
         </Text>
       </Box>
     </Box>
