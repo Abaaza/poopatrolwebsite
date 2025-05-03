@@ -8,8 +8,10 @@ import {
   Text,
   UnorderedList,
   ListItem,
+  Link as ChakraLink,
   extendTheme,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 
 const theme = extendTheme({
   colors: {
@@ -41,152 +43,93 @@ const ServicesPage: React.FC = () => {
         >
           {/* Main Heading */}
           <Heading as="h1" size="xl" color="brand.darkBrown" mb={4}>
-            Services Overview
+            What We Do&nbsp;Best
           </Heading>
 
           {/* Intro */}
-          <Text mb={6}>
-            Welcome to Poo Patrol — where we handle the doo, so you don’t have
-            to! These tail-waggin' Terms of Service ("Terms") lay out how we
-            keep your yard clean, fresh, and paws-itively poop-free. By signing
-            up for our Services, you're giving us the green light to scoop the
-            poop, one paw-print at a time.
-          </Text>
-
-          {/* 1 What We Do */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            1.&nbsp;What We Do (and Doo-Doo Best)
-          </Heading>
-          <Text mb={2}>
-            Poo Patrol fetches up dog waste from both residential and commercial
-            properties with the following offerings:
-          </Text>
-          <UnorderedList ml={6} mb={4}>
-            <ListItem>One-Time “Oh No!” Cleanups</ListItem>
-            <ListItem>
-              Weekly &amp; Bi-Weekly “Keep It Fresh” Cleanings
-            </ListItem>
-            <ListItem>
-              Monthly “Tail-Waggin’ Clean” Subscription Packages
-            </ListItem>
-          </UnorderedList>
-          <Text mb={6}>
-            Yards up to&nbsp;⅛ acre are included in our base pricing. Bigger
-            spaces may require a bit more scratch (additional fees).
-          </Text>
-
-          {/* 2 Access */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            2.&nbsp;Gimme Shelter (and Access!)
-          </Heading>
-          <Text mb={6}>
-            Your pups might be protective, but we need safe, open access to do
-            our job. If we encounter locked gates, frosty latches, or aggressive
-            doggos, we’ll have to skip that visit — but charges will still
-            apply. Need us to come back? A&nbsp;$5 tail-chasing fee applies.
-            Don’t worry — all the doo will be scooped up during your next
-            scheduled cleanup!
-          </Text>
-
-          {/* 3 Weather */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            3.&nbsp;Rain, Snow, or Dog Day Afternoon
-          </Heading>
-          <Text mb={6}>
-            We’re out there in the drizzle and cold — but if the weather’s ruff
-            (lightning, snow piles, or heatwaves), we’ll have to skip for
-            safety. No refunds for missed visits; we’ll catch all the extra poop
-            next time around.
-          </Text>
-
-          {/* 4 Holidays */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            4.&nbsp;Holiday Howl-idays
-          </Heading>
-          <Text mb={2}>
-            We give our scoopers a break on the following holidays:
-          </Text>
-          <UnorderedList ml={6} mb={6}>
-            <ListItem>New Year’s Day</ListItem>
-            <ListItem>Independence Day</ListItem>
-            <ListItem>Thanksgiving Day</ListItem>
-            <ListItem>Christmas Day</ListItem>
-          </UnorderedList>
-          <Text mb={6}>
-            If your regular cleanup day lands on one of these, we’ll resume the
-            next week — no refunds, but all the same poop gets scooped.
-          </Text>
-
-          {/* 5 Payment */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            5.&nbsp;Payment Time (Time to Fetch the Bill)
-          </Heading>
-          <UnorderedList ml={6} mb={6}>
-            <ListItem>
-              <strong>Subscriptions:</strong> Billed monthly on the&nbsp;1st.
-              Pay by the&nbsp;3rd to avoid a bark of interruption.
-            </ListItem>
-            <ListItem>
-              <strong>One-Time Cleanups:</strong> Billed after service and due
-              within&nbsp;24&nbsp;hours.
-            </ListItem>
-            <ListItem>
-              <strong>Late payments:</strong> $10 fee. Accounts&nbsp;30+ days
-              behind may be pawed over to collections.
-            </ListItem>
-          </UnorderedList>
-
-          {/* 6 Yard Shenanigans */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            6.&nbsp;Yard Shenanigans
-          </Heading>
-          <Text mb={6}>
-            We’ll do our best to find every little landmine, but if your grass
-            is wild, leaves are piled, or your yard’s a jungle — we might miss a
-            few. Keep things tidy and we’ll get everything cleaned up on our
-            next visit. Spot a miss? Give us a woof!
-          </Text>
-
-          {/* 7 Extra Charges */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            7.&nbsp;Extra Charges for Extra Ruff Work
-          </Heading>
-          <UnorderedList ml={6} mb={6}>
-            <ListItem>Decks, patios, concrete cleanup – $5/visit</ListItem>
-            <ListItem>Return visits due to access issues – $5</ListItem>
-            <ListItem>Waiting over&nbsp;10&nbsp;minutes – $5</ListItem>
-          </UnorderedList>
-
-          {/* 8 Privacy */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            8.&nbsp;Privacy – We Don’t Snoof Your Stuff
-          </Heading>
-          <Text mb={6}>
-            Your info is safe with us. We only collect what we need to provide
-            service and will never sell or share your data unless it’s needed to
-            process payments or required by law.
-          </Text>
-
-          {/* 9 Updates */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            9.&nbsp;We May Update These Rules
-          </Heading>
-          <Text mb={6}>
-            Sometimes we need to tweak these Terms like a chew toy. Updates will
-            be posted on our website and effective immediately. Using our
-            Services means you accept any changes.
-          </Text>
-
-          {/* 10 Contact */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            10.&nbsp;Woof at Us!
-          </Heading>
           <Text mb={4}>
-            Have questions? Something smell funny (and not in the yard)? Reach
-            out anytime:
+            At&nbsp;Poo&nbsp;Patrol, we’re not just picking up poop — we’re
+            protecting lawns, saving noses, and giving pet owners their yards
+            back. Our mission is simple: cleaner spaces, happier pets, and zero
+            mess left behind.
           </Text>
-          <Text mb={8} fontWeight="bold">
-            📧 Poopatrolcleanup@gmail.com
+
+          <Text mb={4}>
+            We’re proud to offer a full range of dog-waste removal solutions for
+            homes, apartments, parks, HOAs, and anywhere dogs do their business.
+          </Text>
+
+          <Text mb={6}>
+            Whether you’ve got a backyard bomb zone or manage a pup-packed
+            property, our trained scoop pros show up on time, get the job done
+            right, and leave your space fresh, poop-free, and ready to enjoy.
+          </Text>
+
+          {/* Core Services */}
+          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
+            Our Core Services Include:
+          </Heading>
+          <UnorderedList ml={6} mb={6}>
+            <ListItem>
+              <strong>Routine Dog-Poop Scooping</strong> — Weekly, bi-weekly, or
+              as needed
+            </ListItem>
+            <ListItem>
+              <strong>One-Time Cleanups</strong> — Perfect for parties,
+              move-ins/outs, or “oh crap” moments
+            </ListItem>
+            <ListItem>
+              <strong>Commercial Property Patrol</strong> — Reliable scooping
+              for HOAs, apartment complexes, and pet-friendly businesses
+            </ListItem>
+            <ListItem>
+              <strong>Yard Deodorizing &amp; Sanitizing</strong> — Eco-friendly
+              treatments that eliminate odor and bacteria after we scoop
+            </ListItem>
+          </UnorderedList>
+
+          <Text mb={6}>
+            All services are handled with care, professionalism, and a touch of
+            tail-wagging fun.
+          </Text>
+
+          {/* Reliability */}
+          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
+            We’re Poop People You Can Count&nbsp;On
+          </Heading>
+          <Text mb={6}>
+            We show up in uniform, on time, and ready to roll. No cutting
+            corners, no skipped scoops. Just clean lawns, happy paws, and
+            satisfied clients across the map.
+          </Text>
+
+          {/* Links to service pages */}
+          <Text mb={4}>
+            Want to see what plan fits your turf? Check out our specific service
+            pages below:
+          </Text>
+          <UnorderedList ml={6} mb={8}>
+            <ListItem>
+              <ChakraLink as={RouterLink} to="/services/residential" color="brand.golden">
+                Residential&nbsp;Cleanups
+              </ChakraLink>
+            </ListItem>
+            <ListItem>
+              <ChakraLink as={RouterLink} to="/services/commercial" color="brand.golden">
+                Commercial&nbsp;Cleanups
+              </ChakraLink>
+            </ListItem>
+            <ListItem>
+              <ChakraLink as={RouterLink} to="/services/deodorizing" color="brand.golden">
+                Deodorizing &amp; Sanitizing&nbsp;Add-Ons
+              </ChakraLink>
+            </ListItem>
+          </UnorderedList>
+
+          {/* Closing */}
+          <Text fontWeight="bold">
+            Let us handle the doo so you don’t have to. <br />
+            Poo&nbsp;Patrol — cleaner yards, happier pets, guaranteed.
           </Text>
         </Container>
       </Box>
