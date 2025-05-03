@@ -83,8 +83,9 @@ const ServicesPage: React.FC = () => {
               for HOAs, apartment complexes, and pet-friendly businesses
             </ListItem>
             <ListItem>
-              <strong>Yard Deodorizing &amp; Sanitizing</strong> — Eco-friendly
-              treatments that eliminate odor and bacteria after we scoop
+              <strong>Yard Deodorizing&nbsp;&amp;&nbsp;Sanitizing</strong> —
+              Eco-friendly treatments that eliminate odor and bacteria after we
+              scoop
             </ListItem>
           </UnorderedList>
 
@@ -110,18 +111,22 @@ const ServicesPage: React.FC = () => {
           </Text>
           <UnorderedList ml={6} mb={8}>
             <ListItem>
-              <ChakraLink as={RouterLink} to="/services/residential" color="brand.golden">
+              <ChakraLink as={RouterLink} to="/residential" color="brand.golden">
                 Residential&nbsp;Cleanups
               </ChakraLink>
             </ListItem>
             <ListItem>
-              <ChakraLink as={RouterLink} to="/services/commercial" color="brand.golden">
+              <ChakraLink as={RouterLink} to="/commercial" color="brand.golden">
                 Commercial&nbsp;Cleanups
               </ChakraLink>
             </ListItem>
             <ListItem>
-              <ChakraLink as={RouterLink} to="/services/deodorizing" color="brand.golden">
-                Deodorizing &amp; Sanitizing&nbsp;Add-Ons
+              <ChakraLink
+                as={RouterLink}
+                to="/deodorizing"
+                color="brand.golden"
+              >
+                Deodorizing&nbsp;&amp;&nbsp;Sanitizing&nbsp;Add-Ons
               </ChakraLink>
             </ListItem>
           </UnorderedList>
