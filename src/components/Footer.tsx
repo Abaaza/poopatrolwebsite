@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
             <Text>9643 Reseda Blvd.</Text>
             <Text>Northridge, CA 91324</Text>
             <Text>Phone: 818-877-3304</Text>
-            <Text>Email: poopatrolcleanup@gmail.com</Text>
+            <Text>Email: info@poopatrolcleaning.com</Text>
           </Stack>
 
           {/* Right Column - Quick Links */}

@@ -101,7 +101,7 @@ const Commercial: React.FC = () => {
           </Text>
 
           <Text textAlign="center" fontSize="lg" fontWeight="bold">
-            Reach out to <u>poopatrolcleanup@gmail.com</u> for pricing or
+            Reach out to <u>info@poopatrolcleaning.com</u> for pricing or
             business inquiries.
           </Text>
         </Container>

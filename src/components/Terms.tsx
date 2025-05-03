@@ -175,7 +175,7 @@ const Terms: React.FC = () => {
             10.&nbsp;Contact Us
           </Heading>
           <Text mb={8} fontWeight="bold">
-            📧 Poopatrolcleanup@gmail.com
+            📧 info@poopatrolcleaning.com
           </Text>
 
           <Text fontWeight="bold">
