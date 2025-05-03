@@ -15,6 +15,9 @@ import Residential from "./components/Residential";
 import Commercial from "./components/Commercial";
 import Deodorizing from "./components/Deodorizing";
 import ScrollToTop from "./components/ScrollToTop";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize("G-98H33R3ELB");
 
 function App() {
   return (
