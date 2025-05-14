@@ -20,7 +20,7 @@ const transitionStyles = {
 
 const HomePage: React.FC = () => {
   const overlayBg = useColorModeValue(
-    "rgba(255,255,255,0.45)",
+    "rgba(255,255,255,0.35)",
     "rgba(0,0,0,0.35)"
   );
   const sectionHeadingColor = useColorModeValue(
@@ -36,11 +36,11 @@ const HomePage: React.FC = () => {
         as="section"
         position="relative"
         bg="brand.lightGreen"
-        py={{ base: 24, md: 40 }}
+        py={{ base: 24, md: 60 }}
         textAlign="center"
-        backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/a-heartwarming-lifestyle-advertisement-f_BwLoOuTVR667ymeos6zUrg_zLLLMKBUQByBygPocx7piw+(1).png')"
+        backgroundImage="url('https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/13165161616.png')"
         backgroundSize="cover"
-        backgroundPosition="center"
+        backgroundPosition="top"
         backgroundRepeat="no-repeat"
         color={sectionHeadingColor}
         _before={{
@@ -85,7 +85,7 @@ const HomePage: React.FC = () => {
       {/* BOOK NOW SECTION */}
       <Box
         as="section"
-        py={{ base: 14, md: 24 }}
+        py={{ base: 14, md: 5 }}
         bg="brand.brightGreen"
         color="white"
         textAlign="center"
@@ -146,7 +146,7 @@ const HomePage: React.FC = () => {
                 offering high-quality dog waste removal. We serve countless
                 communities and ensure each yard is left fresh and clean. Our
                 professional team is fully trained, vetted, and passionate about
-                dogs. 💩🐶
+                dogs 💩🐶
               </Text>
               <Button
                 as={RouterLink}

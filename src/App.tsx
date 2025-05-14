@@ -17,6 +17,7 @@ import Deodorizing from "./components/Deodorizing";
 import ScrollToTop from "./components/ScrollToTop";
 import ReactGA from "react-ga4";
 import FAQ from "./components/FAQ";
+import Checkout from "./components/Checkout";
 
 ReactGA.initialize("G-98H33R3ELB");
 
@@ -41,6 +42,7 @@ function App() {
             <Route path="/commercial" element={<Commercial />} />
             <Route path="/deodorizing" element={<Deodorizing />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </Box>
 

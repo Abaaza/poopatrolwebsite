@@ -17,6 +17,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Image,
   Stack,
   Text,
   Textarea,
@@ -27,6 +28,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import emailjs from "emailjs-com";
+import { Link as RouterLink } from "react-router-dom";
 
 const FreeQuotePage: React.FC = () => {
   const toast = useToast();
@@ -191,7 +193,7 @@ const FreeQuotePage: React.FC = () => {
                 <FormLabel>Zip Code</FormLabel>
                 <Input
                   name="zipCode"
-                  placeholder="e.g. 99202"
+                  placeholder="e.g. 91325"
                   value={formData.zipCode}
                   onChange={handleChange}
                   isReadOnly={readOnlyStep1}
@@ -301,18 +303,34 @@ const FreeQuotePage: React.FC = () => {
                 Get Estimate
               </Button>
             ) : (
-              <Box
-                p={4}
-                bg="brand.lightGreen"
-                rounded="md"
-                shadow="md"
-                w="full"
-                transition="all 0.3s ease"
-              >
-                <Text fontSize="lg" fontWeight="bold" color="brand.darkBrown">
-                  Estimated Price: {estimate}
-                </Text>
-              </Box>
+<Box
+  p={4}
+  bg="brand.lightGreen"
+  rounded="md"
+  shadow="lg"
+  w="80%"
+  transition="all 0.3s ease"
+  textAlign="center"
+  alignSelf="center"
+  position="relative"
+>
+  <Image
+    src="https://s3.me-south-1.amazonaws.com/www.wall-masters.com/images/1232416546546464646.png"
+    alt="Icon"
+    position="relative"
+    left="50%"
+    transform="translateX(-50%)"
+    boxSize="90px"
+  />
+  <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
+    Estimated Price: {estimate} / Week
+  </Text>
+  <Text fontSize={14} mt={4}>
+  Initial cleanups start at $20 for 1 dog, $35 for 2, $50 for 3, and $60 for 4 dogs, based on a standard ¼-acre yard. Only one promotion is allowed per customer. do not apply to bi-weekly or monthly plans, and one-time cleanups are not eligible for any discounts. New monthly subscribers get their second cleanup free—offer valid for new customers only.
+  </Text>
+</Box>
+
+
             )}
           </VStack>
         </Box>
@@ -342,7 +360,7 @@ const FreeQuotePage: React.FC = () => {
                 <VStack align="start" spacing={5}>
                   <HStack w="full">
                     <FormControl isRequired>
-                      <FormLabel>First Name*</FormLabel>
+                      <FormLabel>First Name</FormLabel>
                       <Input
                         name="firstName"
                         value={formData.firstName}
@@ -352,7 +370,7 @@ const FreeQuotePage: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl isRequired>
-                      <FormLabel>Last Name*</FormLabel>
+                      <FormLabel>Last Name</FormLabel>
                       <Input
                         name="lastName"
                         value={formData.lastName}
@@ -364,7 +382,7 @@ const FreeQuotePage: React.FC = () => {
                   </HStack>
 
                   <FormControl isRequired>
-                    <FormLabel>Email Address*</FormLabel>
+                    <FormLabel>Email Address</FormLabel>
                     <Input
                       name="email"
                       type="email"
@@ -376,7 +394,7 @@ const FreeQuotePage: React.FC = () => {
                   </FormControl>
 
                   <FormControl isRequired>
-                    <FormLabel>Home Address*</FormLabel>
+                    <FormLabel>Home Address</FormLabel>
                     <Input
                       name="homeAddress"
                       value={formData.homeAddress}
@@ -385,10 +403,22 @@ const FreeQuotePage: React.FC = () => {
                       focusBorderColor="brand.golden"
                     />
                   </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Cell Phone Number</FormLabel>
+                    <Input
+                      name="homeAddress"
+                      value={formData.homeAddress}
+                      onChange={handleChange}
+                      borderColor="gray.300"
+                      focusBorderColor="brand.golden"
+                    />
+                    <Text fontSize={12}>✔ By providing your phone number, you agree to receive service-related text messages from Poopatrol, including booking confirmations, reminders, updates, and occasional promotional offers. Message and data rates may apply.</Text>
+                    <Text  fontSize={12}>✔ You can opt out at any time by replying “STOP.” We respect your privacy and will never share or sell your information. For more details, see our [Privacy Policy].</Text>
+                  </FormControl>
 
                   <HStack w="full">
                     <FormControl isRequired>
-                      <FormLabel>City*</FormLabel>
+                      <FormLabel>City</FormLabel>
                       <Input
                         name="city"
                         value={formData.city}
@@ -398,20 +428,24 @@ const FreeQuotePage: React.FC = () => {
                       />
                     </FormControl>
                     <FormControl isRequired>
-                      <FormLabel>State*</FormLabel>
-                      <Input
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        borderColor="gray.300"
-                        focusBorderColor="brand.golden"
-                      />
-                    </FormControl>
+  <FormLabel>State</FormLabel>
+  <Text
+    border="1px solid"
+    borderColor="gray.300"
+    borderRadius="md"
+    p={2}
+    color="gray.700"
+    bg="gray.50"
+  >
+    California
+  </Text>
+</FormControl>
+
                   </HStack>
 
                   <HStack w="full">
                     <FormControl isRequired>
-                      <FormLabel>Dog's name #1*</FormLabel>
+                      <FormLabel>Dog's name #1</FormLabel>
                       <Input
                         name="dogName1"
                         value={formData.dogName1}
@@ -468,18 +502,7 @@ const FreeQuotePage: React.FC = () => {
                     </Stack>
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>
-                      What cleanup message would you like to receive?
-                    </FormLabel>
-                    <Input
-                      name="cleanupMessage"
-                      value={formData.cleanupMessage}
-                      onChange={handleChange}
-                      borderColor="gray.300"
-                      focusBorderColor="brand.golden"
-                    />
-                  </FormControl>
+ 
 
                   <FormControl>
                     <FormLabel>Notification Type</FormLabel>
@@ -497,34 +520,9 @@ const FreeQuotePage: React.FC = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>
-                      How would you like to receive notifications?
-                    </FormLabel>
-                    <Input
-                      name="notificationMethod"
-                      placeholder="Text, phone call, email, etc."
-                      value={formData.notificationMethod}
-                      onChange={handleChange}
-                      borderColor="gray.300"
-                      focusBorderColor="brand.golden"
-                    />
-                  </FormControl>
 
-                  <FormControl isRequired>
-                    <FormLabel>
-                      A card on file is needed. Provide card info now?
-                    </FormLabel>
-                    <RadioGroup
-                      onChange={(val) => handleRadioChange(val, "cardOnFile")}
-                      value={formData.cardOnFile}
-                    >
-                      <Stack direction="row">
-                        <Radio value="yes">Yes</Radio>
-                        <Radio value="no">No, I have questions first</Radio>
-                      </Stack>
-                    </RadioGroup>
-                  </FormControl>
+
+ 
 
                   <FormControl>
                     <FormLabel>How did you hear about us?</FormLabel>
@@ -587,6 +585,8 @@ const FreeQuotePage: React.FC = () => {
                   </FormControl>
 
                   <Button
+                     as={RouterLink}
+                                                to="/checkout"
                     type="submit"
                     colorScheme="green"
                     w="full"

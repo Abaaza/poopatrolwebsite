@@ -27,6 +27,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import emailjs from "emailjs-com";
+import { Link as RouterLink } from "react-router-dom";
 
 const BookNow: React.FC = () => {
   const toast = useToast();
@@ -464,18 +465,7 @@ const BookNow: React.FC = () => {
                     </Stack>
                   </FormControl>
 
-                  <FormControl>
-                    <FormLabel>
-                      What cleanup message would you like to receive?
-                    </FormLabel>
-                    <Input
-                      name="cleanupMessage"
-                      value={formData.cleanupMessage}
-                      onChange={handleChange}
-                      borderColor="gray.300"
-                      focusBorderColor="brand.golden"
-                    />
-                  </FormControl>
+           
 
                   <FormControl>
                     <FormLabel>Notification Type</FormLabel>
@@ -583,6 +573,8 @@ const BookNow: React.FC = () => {
                   </FormControl>
 
                   <Button
+                        as={RouterLink}
+                              to="/checkout"
                     type="submit"
                     colorScheme="green"
                     w="full"
