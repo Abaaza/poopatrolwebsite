@@ -24,7 +24,7 @@ const NavBar: React.FC = () => {
 
   const navItems = [
     { label: "Home", path: "/" },
-    { label: "Free Quote", path: "/free-quote" },
+    
     { label: "Book Now", path: "/book-now" },
     { label: "Services", path: "/services" },
     { label: "About Us", path: "/about-us" },

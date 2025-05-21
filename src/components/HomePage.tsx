@@ -52,14 +52,15 @@ const HomePage: React.FC = () => {
         }}
       >
         <Container maxW="7xl" position="relative" zIndex={1}>
-          <Heading
-            as="h1"
-            size={{ base: "xl", md: "3xl" }}
-            mb={4}
-            textShadow="1px 1px rgba(0,0,0,0.25)"
-          >
-            Say Goodbye To Messy Yards, We Scoop, You Relax!
-          </Heading>
+<Heading
+  as="h1"
+  size={{ base: "xl", md: "3xl" }}
+  mb={4}
+  textShadow="1px 1px rgba(0,0,0,0.25)"
+>
+  Say Goodbye To Messy Yards,<br />
+  We Scoop, You Relax!
+</Heading>
           <Text
             fontSize={{ base: "lg", md: "xl" }}
             maxW="620px"
@@ -70,7 +71,7 @@ const HomePage: React.FC = () => {
           </Text>
           <Button
             as={RouterLink}
-            to="/free-quote"
+            to="/book-now"
             bg="brand.golden"
             color="black"
             size="lg"
