@@ -121,6 +121,20 @@ const BookNow: React.FC = () => {
     agreeToTerms: false,
   });
 
+  const SUBSCRIPTION_PRICES: Record<string, Record<number, number>> = {
+  "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },   // 4 visits /-mo
+  "bi-weekly":     { 1: 30.0, 2: 33.75, 3: 37.5, 4: 41.25 }, // 2 visits /-mo
+  "once-a-month":  { 1: 45.0, 2: 50.63, 3: 56.25, 4: 61.88 },// 1 visit  /-mo
+  "twice-a-week":  { 1: 18.0, 2: 20.25, 3: 22.5, 4: 24.75 }, // 8 visits /-mo
+};
+
+const ONE_TIME_PRICES: Record<number, number> = {
+  1: 50,
+  2: 65,
+  3: 80,
+  4: 95, // 4+ dogs can be handled with a “starts-at” note
+};
+
   /* ───────── helpers ───────── */
   const handleChange = (
     e: React.ChangeEvent<
@@ -150,17 +164,20 @@ const BookNow: React.FC = () => {
   const handleCheckboxGroupChange = (values: string[]) =>
     setFormData((prev) => ({ ...prev, additionalServices: values }));
 
-  const calculateEstimate = () => {
-    let base = 60;
-    if (formData.yardSize === "medium") base += 10;
-    if (formData.yardSize === "large") base += 20;
-    base += (formData.numDogs - 1) * 10;
-    if (formData.frequency === "bi-weekly") base *= 0.8;
-    if (formData.frequency === "once-a-month") base *= 0.6;
-    if (formData.frequency === "one-time") base *= 1.2;
-    return `$${base.toFixed(2)}`;
-  };
+const calculateEstimate = () => {
+  const dogs = Math.min(formData.numDogs, 4);   // cap at 4 for the table
+  let price = 0;
 
+  if (formData.frequency === "one-time") {
+    price = ONE_TIME_PRICES[dogs];
+    // optional yard-size bump only for 4+ dogs:
+    if (dogs === 4 && formData.yardSize === "large") price += 20; // example
+  } else {
+    price = SUBSCRIPTION_PRICES[formData.frequency][dogs];
+  }
+
+  return `$${price.toFixed(2)}`;
+};
   /* ────────────────────────────────────────────── */
   /* ➋  “Get Estimate” click                       */
   /* ────────────────────────────────────────────── */
@@ -361,6 +378,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   focusBorderColor="brand.golden"
                 >
                   <option value="once-a-week">Once A Week</option>
+                  
                   <option value="bi-weekly">Bi‑Weekly</option>
                   <option value="once-a-month">Once A Month</option>
                   <option value="one-time">One Time</option>
