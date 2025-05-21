@@ -28,8 +28,8 @@ const Footer: React.FC = () => {
             <Heading as="h5" size="md">
               Poo Patrol
             </Heading>
-            <Text>9643&nbsp;Reseda&nbsp;Blvd.</Text>
-            <Text>Northridge, CA 91324</Text>
+            <Text>17646&nbsp;Lassen&nbsp;st.</Text>
+            <Text>Northridge, CA 91325</Text>
             <Text>Phone: 818-877-3304</Text>
             <Text>Email: info@poopatrolcleaning.com</Text>
           </Stack>

@@ -58,7 +58,7 @@ const HomePage: React.FC = () => {
             mb={4}
             textShadow="1px 1px rgba(0,0,0,0.25)"
           >
-            LET&nbsp;US&nbsp;HANDLE&nbsp;THE&nbsp;DIRTY&nbsp;WORK!
+            Say Goodbye To Messy Yards, We Scoop, You Relax!
           </Heading>
           <Text
             fontSize={{ base: "lg", md: "xl" }}

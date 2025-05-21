@@ -11,6 +11,7 @@ import {
   useBreakpointValue,
   VStack,
   Button,
+  Text,
   Divider,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
@@ -63,6 +64,7 @@ const NavBar: React.FC = () => {
           cursor="pointer"
           onClick={() => (window.location.href = "/")}
         />
+
 
         {isMobile && (
           <IconButton
