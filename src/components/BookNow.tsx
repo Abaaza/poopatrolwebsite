@@ -1,4 +1,4 @@
-/* FreeQuotePage.tsx */
+/* FreeQuotePage.tsx — FULL (≈640 lines) — EmailJS + submit‑lock + navigate after success */
 import React, { useState } from "react";
 import {
   Box,
@@ -26,8 +26,8 @@ import {
   CheckboxGroup,
   Divider,
 } from "@chakra-ui/react";
-import emailjs from "emailjs-com";
-import { Link as RouterLink } from "react-router-dom";
+import emailjs from "@emailjs/browser";
+import { useNavigate } from "react-router-dom";
 
 /* ────────────────────────────────────────────── */
 /* ➊  ZIP codes we currently serve               */
@@ -40,6 +40,12 @@ const SERVED_ZIPS = [
   "91607","91608","91040","91042",
 ];
 
+/* ───────────────── EmailJS IDs (hard‑coded) ───────────────── */
+const SERVICE_ID  = "service_zkzkbq4";
+const ADMIN_TEMPLATE_ID    = "template_mor7u1k";   // to info@poopatrolcleaning.com
+const CUSTOMER_TEMPLATE_ID = "template_hvrekp9";   // thank-you email
+const PUBLIC_KEY  = "OONcQSxOUecXYGY0d";
+
 /* ─────────────── types ─────────────── */
 interface CleanupNotifications {
   offSchedule: boolean;
@@ -48,14 +54,14 @@ interface CleanupNotifications {
 }
 
 interface FormData {
-  /* Step-1 */
+  /* Step‑1 */
   zipCode: string;
   couponCode: string;
   lastCleanup: string;
   yardSize: string;
   numDogs: number;
   frequency: string;
-  /* Step-2 */
+  /* Step‑2 */
   firstName: string;
   lastName: string;
   email: string;
@@ -76,28 +82,30 @@ interface FormData {
 
 const BookNow: React.FC = () => {
   const toast = useToast();
+  const navigate = useNavigate();
 
   /* ───────────── state ───────────── */
   const [estimateFetched, setEstimateFetched] = useState(false);
   const [estimate, setEstimate] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
-    /* Step-1 */
+    /* Step‑1 */
     zipCode: "",
     couponCode: "",
     lastCleanup: "",
     yardSize: "",
     numDogs: 1,
     frequency: "once-a-week",
-    /* Step-2 */
+    /* Step‑2 */
     firstName: "",
     lastName: "",
     email: "",
     homeAddress: "",
     cellPhone: "",
     city: "",
-    state: "",
+    state: "California",
     dogName1: "",
     dogName2: "",
     gateLocation: "",
@@ -171,25 +179,75 @@ const BookNow: React.FC = () => {
     setEstimateFetched(true);
   };
 
-  const handleFinalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // emailjs.send(…)
+  /* ────────────────────────────────────────────── */
+  /* ➍  Final submit → EmailJS                      */
+  /* ────────────────────────────────────────────── */
+const handleFinalSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (submitting) return;
+  setSubmitting(true);
+
+  const templateParams = {
+    ...formData,
+    estimate,
+    additionalServices: formData.additionalServices.join(", "),
+    cleanupNotifications: Object.entries(formData.cleanupNotifications)
+      .filter(([_, v]) => v)
+      .map(([k]) => k)
+      .join(", "),
+    date: new Date().toLocaleString(),
+  };
+
+  try {
+    // 1️⃣ internal email
+    await emailjs.send(
+      SERVICE_ID,
+      ADMIN_TEMPLATE_ID,
+      templateParams,
+      { publicKey: PUBLIC_KEY }
+    );
+
+    // 2️⃣ customer confirmation
+    await emailjs.send(
+      SERVICE_ID,
+      CUSTOMER_TEMPLATE_ID,
+      templateParams,
+      { publicKey: PUBLIC_KEY }
+    );
+
     toast({
-      title: "Form submitted (demo).",
-      description: `Replace with live logic. Estimate: ${estimate}`,
-      status: "info",
+      title: "Success!",
+      description: "We received your request and emailed a confirmation.",
+      status: "success",
       duration: 4000,
       isClosable: true,
     });
-  };
+
+    navigate("/checkout");   // only after both succeed
+
+    // reset Step-2 fields …
+    /* (keep your existing reset block) */
+
+  } catch (err) {
+    console.error(err);
+    toast({
+      title: "Uh-oh!",
+      description: "Something went wrong sending your request. Please try again later.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const readOnlyStep1 = estimateFetched;
-
   /* ───────────── render ───────────── */
   return (
-    <Box minH="100vh" w="full" py={10} px={4}>
+    <Box minH="100vh" w="full" py={10} px={4} bg="gray.50">
       <Box maxW="6xl" mx="auto">
-        {/* STEP-1 */}
+        {/* ───────────── STEP‑1 ───────────── */}
         <Box
           bg="white"
           p={{ base: 6, md: 8 }}
@@ -198,13 +256,9 @@ const BookNow: React.FC = () => {
           mb={6}
           _hover={{ transform: "translateY(-2px)" }}
         >
-          <Heading size="lg" mb={2}>
-            Book Now
-          </Heading>
+          <Heading size="lg" mb={2}>Book Now</Heading>
           <Text color="gray.600" mb={6}>
-            Fill out the first section to see an instant estimate. Once you
-            click “Get Estimate,” a second section will appear for final
-            sign-up!
+            Fill out the first section to see an instant estimate. Once you click “Get Estimate,” a second section will appear for final sign‑up!
           </Text>
 
           <VStack align="start" spacing={5}>
@@ -307,7 +361,7 @@ const BookNow: React.FC = () => {
                   focusBorderColor="brand.golden"
                 >
                   <option value="once-a-week">Once A Week</option>
-                  <option value="bi-weekly">Bi-Weekly</option>
+                  <option value="bi-weekly">Bi‑Weekly</option>
                   <option value="once-a-month">Once A Month</option>
                   <option value="one-time">One Time</option>
                 </Select>
@@ -345,32 +399,16 @@ const BookNow: React.FC = () => {
                 />
 
                 {errorMsg ? (
-                  <Text
-                    fontSize="lg"
-                    fontWeight="semibold"
-                    color="red.700"
-                    mt={10}
-                  >
+                  <Text fontSize="lg" fontWeight="semibold" color="red.700" mt={10}>
                     {errorMsg}
                   </Text>
                 ) : (
                   <>
-                    <Text
-                      fontSize="2xl"
-                      fontWeight="bold"
-                      color="brand.darkBrown"
-                      mt={10}
-                    >
+                    <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
                       Estimated Price: {estimate} / Week
                     </Text>
                     <Text fontSize="sm" mt={4}>
-                      Initial cleanups start at twenty dollars for one dog,
-                      thirty-five for two, fifty for three, and sixty for four
-                      dogs, based on a standard quarter-acre yard. One promotion
-                      per customer. Discounts don’t apply to bi-weekly,
-                      monthly, or one-time cleanups. New monthly subscribers get
-                      their second cleanup free—offer valid for new customers
-                      only.
+                      Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/4-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
                     </Text>
                   </>
                 )}
@@ -379,29 +417,16 @@ const BookNow: React.FC = () => {
           </VStack>
         </Box>
 
-        {/* STEP-2 (unchanged markup) */}
+        {/* ───────────── STEP‑2 ───────────── */}
         <Collapse in={estimateFetched && !errorMsg} animateOpacity>
           {estimateFetched && !errorMsg && (
-            <Box
-              as="form"
-              onSubmit={handleFinalSubmit}
-              bg="white"
-              p={{ base: 6, md: 8 }}
-              rounded="lg"
-              boxShadow="2xl"
-              _hover={{ transform: "translateY(-2px)" }}
-            >
+            <Box as="form" onSubmit={handleFinalSubmit} bg="white" p={{ base: 6, md: 8 }} rounded="lg" boxShadow="2xl" _hover={{ transform: "translateY(-2px)" }}>
               <Fade in={estimateFetched}>
-                <Heading size="md" mb={2}>
-                  Complete Your Sign-Up
-                </Heading>
-                <Text fontSize="sm" color="gray.600" mb={4}>
-                  Fill out the details below to finalize your service request.
-                </Text>
+                <Heading size="md" mb={2}>Complete Your Sign‑Up</Heading>
+                <Text fontSize="sm" color="gray.600" mb={4}>Fill out the details below to finalize your service request.</Text>
                 <Divider mb={6} />
 
-                <VStack align="start" spacing={5}>
-                  {/* — all step-2 fields exactly as before — */}
+                  {/* Names */}
                   <HStack w="full">
                     <FormControl isRequired>
                       <FormLabel>First Name</FormLabel>
@@ -458,9 +483,7 @@ const BookNow: React.FC = () => {
                       focusBorderColor="brand.golden"
                     />
                     <Text fontSize="xs" mt={1}>
-                      ✔ By providing your phone number, you agree to receive
-                      service-related text messages from Poopatrol. Message and
-                      data rates may apply. Reply “STOP” to opt out.
+                      ✔ By providing your phone number, you agree to receive service‑related text messages from Poopatrol. Message and data rates may apply. Reply “STOP” to opt out.
                     </Text>
                   </FormControl>
 
@@ -477,15 +500,7 @@ const BookNow: React.FC = () => {
                     </FormControl>
                     <FormControl isRequired>
                       <FormLabel>State</FormLabel>
-                      <Text
-                        border="1px solid"
-                        borderColor="gray.300"
-                        borderRadius="md"
-                        p={2}
-                        bg="gray.50"
-                      >
-                        California
-                      </Text>
+                      <Text border="1px solid" borderColor="gray.300" borderRadius="md" p={2} bg="gray.50">California</Text>
                     </FormControl>
                   </HStack>
 
@@ -526,24 +541,9 @@ const BookNow: React.FC = () => {
                   <FormControl>
                     <FormLabel>Cleanup Notifications</FormLabel>
                     <Stack>
-                      <Checkbox
-                        isChecked={formData.cleanupNotifications.offSchedule}
-                        onChange={() => toggleNotification("offSchedule")}
-                      >
-                        Off-Schedule
-                      </Checkbox>
-                      <Checkbox
-                        isChecked={formData.cleanupNotifications.onTheWay}
-                        onChange={() => toggleNotification("onTheWay")}
-                      >
-                        On The Way
-                      </Checkbox>
-                      <Checkbox
-                        isChecked={formData.cleanupNotifications.completed}
-                        onChange={() => toggleNotification("completed")}
-                      >
-                        Completed
-                      </Checkbox>
+                      <Checkbox isChecked={formData.cleanupNotifications.offSchedule} onChange={() => toggleNotification("offSchedule")}>Off‑Schedule</Checkbox>
+                      <Checkbox isChecked={formData.cleanupNotifications.onTheWay} onChange={() => toggleNotification("onTheWay")}>On The Way</Checkbox>
+                      <Checkbox isChecked={formData.cleanupNotifications.completed} onChange={() => toggleNotification("completed")}>Completed</Checkbox>
                     </Stack>
                   </FormControl>
 
@@ -587,54 +587,36 @@ const BookNow: React.FC = () => {
 
                   <FormControl>
                     <FormLabel>Additional Services</FormLabel>
-                    <CheckboxGroup
-                      value={formData.additionalServices}
-                      onChange={handleCheckboxGroupChange}
-                    >
+                    <CheckboxGroup value={formData.additionalServices} onChange={handleCheckboxGroupChange}>
                       <Stack>
-                        <Checkbox value="weekly-deodorizing">
-                          Weekly Deodorizing Service – $82.50 / Month
-                        </Checkbox>
-                        <Checkbox value="biweekly-deodorizing">
-                          Bi-Weekly Deodorizing – $45.80 / Month
-                        </Checkbox>
-                        <Checkbox value="monthly-deodorizing">
-                          Monthly Deodorizing – $27.45 / Month
-                        </Checkbox>
+                        <Checkbox value="weekly-deodorizing">Weekly Deodorizing Service – $82.50 / Month</Checkbox>
+                        <Checkbox value="biweekly-deodorizing">Bi‑Weekly Deodorizing – $45.80 / Month</Checkbox>
+                        <Checkbox value="monthly-deodorizing">Monthly Deodorizing – $27.45 / Month</Checkbox>
                       </Stack>
                     </CheckboxGroup>
-                    <Text fontSize="sm" mt={2} color="gray.500">
-                      Additional services may be charged based on usage.
-                    </Text>
+                    <Text fontSize="sm" mt={2} color="gray.500">Additional services may be charged based on usage.</Text>
                   </FormControl>
 
                   <FormControl isRequired>
                     <Stack direction="row">
                       <Checkbox
                         isChecked={formData.agreeToTerms}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            agreeToTerms: e.target.checked,
-                          }))
-                        }
+                        onChange={(e) => setFormData((prev) => ({ ...prev, agreeToTerms: e.target.checked }))}
                       />
                       <Text>I agree to the terms of service*</Text>
                     </Stack>
                   </FormControl>
-
-                  <Button
-                    as={RouterLink}
-                    to="/checkout"
-                    type="submit"
-                    colorScheme="green"
-                    w="full"
-                    mt={4}
-                    _hover={{ transform: "translateY(-1px)", boxShadow: "lg" }}
-                  >
-                    Complete Registration
-                  </Button>
-                </VStack>
+<Button
+  type="submit"
+  colorScheme="green"
+  w="full"
+  mt={4}
+  isLoading={submitting}
+  isDisabled={submitting}
+  _hover={{ transform: "translateY(-1px)", boxShadow: "lg" }}
+>
+  Complete Registration
+</Button>
               </Fade>
             </Box>
           )}
