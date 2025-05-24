@@ -310,25 +310,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
             {/* Last cleanup + yard size */}
             <HStack w="full" spacing={4}>
-              <FormControl>
-                <FormLabel>Last Cleanup</FormLabel>
-                <Select
-                  name="lastCleanup"
-                  value={formData.lastCleanup}
-                  onChange={handleChange}
-                  isDisabled={readOnlyStep1}
-                  borderColor="gray.300"
-                  focusBorderColor="brand.golden"
-                >
-                  <option value="">Select one…</option>
-                  <option value="1week">One Week Ago</option>
-                  <option value="2weeks">Two Weeks Ago</option>
-                  <option value="month">Over a Month Ago</option>
-                  <option value="never">Never</option>
-                </Select>
-              </FormControl>
 
-              <FormControl>
+
+              <FormControl isRequired>
                 <FormLabel>Yard Size</FormLabel>
                 <Select
                   name="yardSize"
@@ -348,7 +332,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
             {/* Dogs + frequency */}
             <HStack w="full" spacing={4}>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>How Many Dogs?</FormLabel>
                 <NumberInput
                   min={1}
@@ -367,8 +351,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                 </NumberInput>
               </FormControl>
 
-              <FormControl>
-                <FormLabel>Cleanup Frequency</FormLabel>
+              <FormControl isRequired>
+                <FormLabel >Cleanup Frequency</FormLabel>
                 <Select
                   name="frequency"
                   value={formData.frequency}
@@ -426,7 +410,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       Estimated Price: {estimate} / Week
                     </Text>
                     <Text fontSize="sm" mt={4}>
-                      Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/4-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
+                      Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
                     </Text>
                   </>
                 )}
