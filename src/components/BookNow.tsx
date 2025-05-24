@@ -644,4 +644,4 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
   );
 };
 
-export default BookNow;
+export default React.memo(BookNow);

@@ -187,4 +187,4 @@ const Terms: React.FC = () => {
   );
 };
 
-export default Terms;
+export default React.memo(Terms);
