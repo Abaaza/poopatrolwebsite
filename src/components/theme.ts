@@ -1,10 +1,10 @@
 // src/theme.ts
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig, StyleFunctionProps } from "@chakra-ui/react";
 
 // 1) Set up your color mode config
 const config: ThemeConfig = {
-  initialColorMode: "light",
-  useSystemColorMode: false,
+  initialColorMode: "system",
+  useSystemColorMode: true,
 };
 
 // 2) Extend the Chakra theme
@@ -16,19 +16,22 @@ const customTheme = extendTheme({
       lightGreen: "#d7e5b4",
       golden: "#e5ab30",
       brightGreen: "#8bc42e",
+      darkGreen: "#4a9720",
+      beige: "#f5f0e6",
     },
   },
   fonts: {
-    heading: "'Open Sans', sans-serif",
+    heading: "'Poppins', 'Open Sans', sans-serif",
     body: "'Open Sans', sans-serif",
   },
   // optional global style overrides
   styles: {
-    global: {
+    global: (props: StyleFunctionProps) => ({
       body: {
-        bg: "brand.lightGreen",
+      bg: props.colorMode === "dark" ? "gray.800" : "brand.lightGreen",
+        color: props.colorMode === "dark" ? "brand.beige" : "brand.darkBrown",
       },
-    },
+    }),
   },
   // customize shadows, transitions, etc. if desired
   shadows: {

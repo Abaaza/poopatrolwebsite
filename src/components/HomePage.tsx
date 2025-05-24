@@ -12,6 +12,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { BoxProps } from "@chakra-ui/react";
+
+const MotionBox = motion<BoxProps>(Box);
 
 const transitionStyles = {
   transition: "all 0.3s ease",
@@ -31,7 +35,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       {/* HERO / HOME SECTION */}
-      <Box
+      <MotionBox
         id="home"
         as="section"
         position="relative"
@@ -50,6 +54,9 @@ const HomePage: React.FC = () => {
           bg: overlayBg,
           zIndex: 0,
         }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
       >
         <Container maxW="7xl" position="relative" zIndex={1}>
 <Heading
@@ -81,7 +88,7 @@ const HomePage: React.FC = () => {
             Get a Free Quote
           </Button>
         </Container>
-      </Box>
+      </MotionBox>
 
       {/* BOOK NOW SECTION */}
       <Box

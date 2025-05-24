@@ -13,14 +13,24 @@ import {
   Button,
   Text,
   Divider,
+    useColorMode,
+
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { motion } from "framer-motion";
 import logo from "../assets/logopoopatrol.jpg";
 
 const NavBar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const { colorMode, toggleColorMode } = useColorMode();
+  const location = useLocation();
+
+  const MotionLink = motion(ChakraLink);
+  const MotionButton = motion(Button);
+
 
   const navItems = [
     { label: "Home", path: "/" },
@@ -67,31 +77,51 @@ const NavBar: React.FC = () => {
 
 
         {isMobile && (
-          <IconButton
-            icon={isOpen ? <FaTimes /> : <FaBars />}
-            aria-label="Toggle Menu"
-            variant="ghost"
-            onClick={isOpen ? onClose : onOpen}
-            transition="all 0.3s ease"
-            _hover={{ bg: "brand.golden" }}
-          />
+         <HStack>
+            <IconButton
+              icon={isOpen ? <FaTimes /> : <FaBars />}
+              aria-label="Toggle Menu"
+              variant="ghost"
+              onClick={isOpen ? onClose : onOpen}
+              transition="all 0.3s ease"
+              _hover={{ bg: "brand.golden" }}
+            />
+            <IconButton
+              aria-label="Toggle color mode"
+              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              variant="ghost"
+              onClick={toggleColorMode}
+              transition="all 0.3s ease"
+              _hover={{ bg: "brand.golden" }}
+            />
+          </HStack>
         )}
 
         {/* Desktop Menu */}
         {!isMobile && (
-          <HStack as="nav" spacing={8}>
+          <HStack as="nav" spacing={8} align="center">
             {navItems.map((item) => (
-              <ChakraLink
+              <MotionLink
                 key={item.path}
                 as={RouterLink}
                 to={item.path}
                 fontWeight="semibold"
                 transition="color 0.3s ease"
+                color={location.pathname === item.path ? "brand.golden" : undefined}
+                whileHover={{ scale: 1.1 }}
                 _hover={{ textDecoration: "none", color: "brand.golden" }}
               >
                 {item.label}
-              </ChakraLink>
+              </MotionLink>
             ))}
+            <IconButton
+              aria-label="Toggle color mode"
+              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              variant="ghost"
+              onClick={toggleColorMode}
+              transition="all 0.3s ease"
+              _hover={{ bg: "brand.golden" }}
+            />
           </HStack>
         )}
       </Flex>
@@ -101,7 +131,7 @@ const NavBar: React.FC = () => {
         <Box bg="white" shadow="md" px={4} py={2}>
           <VStack align="start" spacing={4}>
             {navItems.map((item) => (
-              <Button
+              <MotionButton
                 key={item.path}
                 as={RouterLink}
                 to={item.path}
@@ -111,10 +141,11 @@ const NavBar: React.FC = () => {
                 fontWeight="bold"
                 color="brand.darkBrown"
                 _hover={{ bg: "brand.golden", color: "black" }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onClose}
               >
                 {item.label}
-              </Button>
+              </MotionButton>
             ))}
           </VStack>
         </Box>
