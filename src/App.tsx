@@ -16,7 +16,7 @@ import LoadingOverlay from "./components/LoadingOverlay";
 
 const HomePage = lazy(() => import("./components/HomePage"));
 const ServicesPage = lazy(() => import("./components/ServicesPage"));
-const FreeQuotePage = lazy(() => import("./components/FreeQuotePage"));
+
 const BookNow = lazy(() => import("./components/BookNow"));
 const AboutUs = lazy(() => import("./components/AboutUs"));
 const Terms = lazy(() => import("./components/Terms"));
@@ -54,7 +54,7 @@ function RouterContent() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
               <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
-              <Route path="/free-quote" element={<PageWrapper><FreeQuotePage /></PageWrapper>} />
+              
               <Route path="/book-now" element={<PageWrapper><BookNow /></PageWrapper>} />
               <Route path="/about-us" element={<PageWrapper><AboutUs /></PageWrapper>} />
               <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
