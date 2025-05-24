@@ -16,6 +16,7 @@ import Residential from "./components/Residential";
 import Commercial from "./components/Commercial";
 import Deodorizing from "./components/Deodorizing";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import ReactGA from "react-ga4";
 import FAQ from "./components/FAQ";
 import Checkout from "./components/Checkout";
@@ -55,6 +56,7 @@ function RouterContent() {
           </Routes>
         </AnimatePresence>
       </Box>
+      <ScrollToTopButton />
       <Footer />
     </>
   );
