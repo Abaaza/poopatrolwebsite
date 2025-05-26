@@ -29,7 +29,9 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import { useNavigate } from "react-router-dom";
 
@@ -186,11 +188,37 @@ const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
         [field]: !prev.cleanupNotifications[field],
       },
     }));
+  const handleDeodorizingChange = (value: string) => {
+    let newServices: string[] = [];
+    setFormData((prev) => {
+      const withoutDeo = prev.additionalServices.filter(
+        (s) => !s.includes("deodorizing")
+      );
+      if (prev.additionalServices.includes(value)) {
+        newServices = [...withoutDeo];
+      } else if (value) {
+        newServices = [...withoutDeo, value];
+      } else {
+        newServices = [...withoutDeo];
+      }
+      return { ...prev, additionalServices: newServices };
+    });
+    if (estimateFetched) setEstimate(calculateEstimate(newServices));
+  };
 
-  const handleAdditionalServiceChange = (value: string) => {
-    const selected = value ? [value] : [];
-    setFormData((prev) => ({ ...prev, additionalServices: selected }));
-    if (estimateFetched) setEstimate(calculateEstimate(selected));
+  const handleSanitizingChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const checked = e.target.checked;
+    let newServices: string[] = [];
+    setFormData((prev) => {
+      const without = prev.additionalServices.filter(
+        (s) => s !== "sanitizing-service"
+      );
+      newServices = checked ? [...without, "sanitizing-service"] : without;
+      return { ...prev, additionalServices: newServices };
+    });
+    if (estimateFetched) setEstimate(calculateEstimate(newServices));
   };
 
   const handleStartOver = () => {
@@ -300,7 +328,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
   }
 };
 
-  const readOnlyStep1 = false;
+  const readOnlyStep1 = estimateFetched;
   /* ───────────── render ───────────── */
   return (
     <Box minH="100vh" w="full" py={10} px={4} bg="gray.50">
@@ -423,6 +451,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                 Get Estimate
               </Button>
             ) : (
+                            <>
               <Box
                 p={4}
                 bg={errorMsg ? "red.50" : "brand.lightGreen"}
@@ -459,6 +488,14 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   </>
                 )}
               </Box>
+                            <Button
+                mt={4}
+                alignSelf="flex-start"
+                onClick={handleStartOver}
+              >
+                Reset
+              </Button>
+            </>
             )}
           </VStack>
         </Box>
@@ -653,26 +690,48 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
                   <FormControl>
                     <FormLabel>Additional Services</FormLabel>
-                    <RadioGroup value={formData.additionalServices[0] || ""} onChange={handleAdditionalServiceChange}>
-                      <Stack>
+                    <RadioGroup
+                      value={
+                        formData.additionalServices.find((s) =>
+                          s.includes("deodorizing")
+                        ) || ""
+                      }
+                      onChange={handleDeodorizingChange}
+                    >                      <Stack>
                         <Radio value="weekly-deodorizing">Weekly Deodorizing Service</Radio>
-                        <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing </Radio>
-                        <Radio value="monthly-deodorizing">Monthly Deodorizing </Radio>
-
-                        <Checkbox value="sanitizing-service">Sanitizing Service – $10 / Visit</Checkbox>
+                        <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing</Radio>
+                        <Radio value="monthly-deodorizing">Monthly Deodorizing</Radio>
                       </Stack>
                     </RadioGroup>
-                    <Text fontSize="sm" mt={2} color="gray.500">Additional services may be charged based on usage.</Text>
-                  </FormControl>
+  <Checkbox
+                      mt={2}
+                      isChecked={formData.additionalServices.includes("sanitizing-service")}
+                      onChange={handleSanitizingChange}
+                    >
+                      Sanitizing Service – $10 / Visit
+                    </Checkbox>
+                    <Text fontSize="sm" mt={2} color="gray.500">
+                      Additional services may be charged based on usage.
+                    </Text>                  </FormControl>
 
                   <FormControl isRequired>
-                    <Stack direction="row">
+                    <Stack direction="row" align="center">
                       <Checkbox
                         isChecked={formData.agreeToTerms}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, agreeToTerms: e.target.checked }))}
-                      />
-                      <Text>I agree to the terms of service*</Text>
-                    </Stack>
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            agreeToTerms: e.target.checked,
+                          }))
+                        }
+                      />                      
+                      <Text>
+                        I agree to the{' '}
+                        <ChakraLink as={RouterLink} to="/terms" color="brand.golden">
+                          Terms of Service
+                        </ChakraLink>
+                        *
+                      </Text>                    </Stack>
                   </FormControl>
 
                   <Text fontSize="xl" fontWeight="bold" textAlign="center">
