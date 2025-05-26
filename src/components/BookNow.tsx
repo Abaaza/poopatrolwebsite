@@ -565,7 +565,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         />
                       </FormControl>
                       <FormControl isRequired>
-                        <FormLabel>Aggression 1-10 (10 = aggressive)</FormLabel>
+                        <FormLabel>Dog Aggression Level (10 = aggressive)</FormLabel>
                         <Slider
                           min={1}
                           max={10}
@@ -605,10 +605,10 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   <FormControl>
                     <FormLabel>Cleanup Notifications</FormLabel>
                     <Stack>
-                      <Checkbox isChecked={formData.cleanupNotifications.offSchedule} onChange={() => toggleNotification("offSchedule")}>Off‑Schedule</Checkbox>
+                      <Checkbox isChecked={formData.cleanupNotifications.offSchedule} onChange={() => toggleNotification("offSchedule")}>Added To Route</Checkbox>
                       <Checkbox isChecked={formData.cleanupNotifications.onTheWay} onChange={() => toggleNotification("onTheWay")}>On The Way</Checkbox>
-                      <Checkbox isChecked={formData.cleanupNotifications.completed} onChange={() => toggleNotification("completed")}>Completed</Checkbox>
-                      <Checkbox value="sanitizing-service">Sanitizing Service – $10 / Visit</Checkbox>
+                      <Checkbox isChecked={formData.cleanupNotifications.completed} onChange={() => toggleNotification("completed")}>Clean Up Completed</Checkbox>
+                      
 
                     </Stack>
                   </FormControl>
@@ -658,6 +658,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         <Radio value="weekly-deodorizing">Weekly Deodorizing Service – $82.50 / Month</Radio>
                         <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing – $45.80 / Month</Radio>
                         <Radio value="monthly-deodorizing">Monthly Deodorizing – $27.45 / Month</Radio>
+
+                        <Checkbox value="sanitizing-service">Sanitizing Service – $10 / Visit</Checkbox>
                       </Stack>
                     </RadioGroup>
                     <Text fontSize="sm" mt={2} color="gray.500">Additional services may be charged based on usage.</Text>
