@@ -101,11 +101,13 @@ const BookNow: React.FC = () => {
   const [estimate, setEstimate] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [reference, setReference] = useState<string>("");
+
 
   const initialFormData: FormData = {
     /* Step‑1 */
     zipCode: "",
-    couponCode: "",
+    couponCode: "PROMO",
     lastCleanup: "",
     yardSize: "",
     numDogs: 1,
@@ -273,9 +275,14 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
   if (submitting) return;
   setSubmitting(true);
 
+  const ref = "POO-" + Math.floor(100000 + Math.random() * 900000);
+  setReference(ref);
+
+
   const templateParams = {
     ...formData,
     estimate,
+    reference: ref,
     additionalServices: formData.additionalServices.join(", "),
     cleanupNotifications: Object.entries(formData.cleanupNotifications)
       .filter(([_, v]) => v)
@@ -309,7 +316,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
       isClosable: true,
     });
 
-    navigate("/checkout");   // only after both succeed
+    navigate("/checkout", { state: { reference: ref } });   // only after both succeed
 
     // reset Step-2 fields …
     /* (keep your existing reset block) */
@@ -697,7 +704,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         ) || ""
                       }
                       onChange={handleDeodorizingChange}
-                    >                      <Stack>
+                    >
+                      <Stack>
+                        <Radio value="">No Deodorizing Service</Radio>
                         <Radio value="weekly-deodorizing">Weekly Deodorizing Service</Radio>
                         <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing</Radio>
                         <Radio value="monthly-deodorizing">Monthly Deodorizing</Radio>
@@ -735,8 +744,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   </FormControl>
 
                   <Text fontSize="xl" fontWeight="bold" textAlign="center">
-                    Updated Price: {estimate}
-                  </Text>
+                    {formData.frequency === "one-time"
+                      ? `Updated Price: ${estimate}`
+                      : `Updated Price: ${estimate} / Week`}                  </Text>
                   <Button
                     type="submit"
                     colorScheme="green"

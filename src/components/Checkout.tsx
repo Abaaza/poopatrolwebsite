@@ -1,5 +1,5 @@
 // src/components/Checkout.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   ChakraProvider,
@@ -10,6 +10,8 @@ import {
   extendTheme,
   Badge,
 } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
+
 
 const theme = extendTheme({
   colors: {
@@ -23,12 +25,8 @@ const theme = extendTheme({
 });
 
 const Checkout: React.FC = () => {
-  const [reference, setReference] = useState("");
-
-  useEffect(() => {
-    const randomRef = "POO-" + Math.floor(100000 + Math.random() * 900000);
-    setReference(randomRef);
-  }, []);
+  const location = useLocation();
+  const reference = (location.state as any)?.reference || "";
 
   return (
     <ChakraProvider theme={theme}>
