@@ -655,9 +655,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <FormLabel>Additional Services</FormLabel>
                     <RadioGroup value={formData.additionalServices[0] || ""} onChange={handleAdditionalServiceChange}>
                       <Stack>
-                        <Radio value="weekly-deodorizing">Weekly Deodorizing Service – $82.50 / Month</Radio>
-                        <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing – $45.80 / Month</Radio>
-                        <Radio value="monthly-deodorizing">Monthly Deodorizing – $27.45 / Month</Radio>
+                        <Radio value="weekly-deodorizing">Weekly Deodorizing Service</Radio>
+                        <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing </Radio>
+                        <Radio value="monthly-deodorizing">Monthly Deodorizing </Radio>
 
                         <Checkbox value="sanitizing-service">Sanitizing Service – $10 / Visit</Checkbox>
                       </Stack>
