@@ -1,5 +1,5 @@
 /* FreeQuotePage.tsx — FULL (≈640 lines) — EmailJS + submit‑lock + navigate after success */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -71,6 +71,12 @@ interface FormData {
   state: string;
   dogName1: string;
   dogName2: string;
+  dogName3: string;
+  dogName4: string;
+  dogAggression1: number;
+  dogAggression2: number;
+  dogAggression3: number;
+  dogAggression4: number;
   gateLocation: string;
   cleanupNotifications: CleanupNotifications;
   notificationType: string;
@@ -90,7 +96,7 @@ const BookNow: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState<FormData>({
+  const initialFormData: FormData = {
     /* Step‑1 */
     zipCode: "",
     couponCode: "",
@@ -108,6 +114,12 @@ const BookNow: React.FC = () => {
     state: "California",
     dogName1: "",
     dogName2: "",
+    dogName3: "",
+    dogName4: "",
+    dogAggression1: 1,
+    dogAggression2: 1,
+    dogAggression3: 1,
+    dogAggression4: 1,
     gateLocation: "",
     cleanupNotifications: {
       offSchedule: false,
@@ -119,7 +131,9 @@ const BookNow: React.FC = () => {
     additionalComments: "",
     additionalServices: [],
     agreeToTerms: false,
-  });
+  };
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const SUBSCRIPTION_PRICES: Record<string, Record<number, number>> = {
   "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },   // 4 visits /-mo
@@ -134,6 +148,14 @@ const ONE_TIME_PRICES: Record<number, number> = {
   3: 80,
   4: 95, // 4+ dogs can be handled with a “starts-at” note
 };
+
+const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
+  "weekly-deodorizing": 20.63,
+  "biweekly-deodorizing": 11.45,
+  "monthly-deodorizing": 6.86,
+  "sanitizing-service": 10,
+};
+
 
   /* ───────── helpers ───────── */
   const handleChange = (
@@ -161,23 +183,37 @@ const ONE_TIME_PRICES: Record<number, number> = {
       },
     }));
 
-  const handleCheckboxGroupChange = (values: string[]) =>
+  const handleCheckboxGroupChange = (values: string[]) => {
     setFormData((prev) => ({ ...prev, additionalServices: values }));
+    if (estimateFetched) setEstimate(calculateEstimate(values));
+  };
 
-const calculateEstimate = () => {
-  const dogs = Math.min(formData.numDogs, 4);   // cap at 4 for the table
+  const handleStartOver = () => {
+    setFormData(initialFormData);
+    setEstimateFetched(false);
+    setEstimate("");
+    setErrorMsg("");
+  };
+
+  useEffect(() => {
+    if (estimateFetched) setEstimate(calculateEstimate());
+  }, [formData.additionalServices]);
+
+const calculateEstimate = (services: string[] = formData.additionalServices) => {  const dogs = Math.min(formData.numDogs, 4);   // cap at 4 for the table
   let price = 0;
 
   if (formData.frequency === "one-time") {
     price = ONE_TIME_PRICES[dogs];
     // optional yard-size bump only for 4+ dogs:
-    if (dogs === 4 && formData.yardSize === "large") price += 20; // example
+    if (dogs === 4 && formData.yardSize === "large") price += 20;
   } else {
     price = SUBSCRIPTION_PRICES[formData.frequency][dogs];
   }
 
-  return `$${price.toFixed(2)}`;
-};
+  let addOn = 0;
+  services.forEach((s) => (addOn += ADDITIONAL_SERVICE_PRICES[s] || 0));
+
+  return `$${(price + addOn).toFixed(2)}`;};
   /* ────────────────────────────────────────────── */
   /* ➋  “Get Estimate” click                       */
   /* ────────────────────────────────────────────── */
@@ -278,7 +314,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
             Fill out the first section to see an instant estimate. Once you click “Get Estimate,” a second section will appear for final sign‑up!
           </Text>
 
-          <VStack align="start" spacing={5}>
+          <VStack align="start" spacing={6}>
             {/* ZIP + coupon */}
             <HStack w="full" spacing={4}>
               <FormControl isRequired>
@@ -417,6 +453,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
               </Box>
             )}
           </VStack>
+                    {estimateFetched && (
+            <Button mt={4} onClick={handleStartOver}>Start New Estimate</Button>
+          )}
         </Box>
 
         {/* ───────────── STEP‑2 ───────────── */}
@@ -427,6 +466,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                 <Heading size="md" mb={2}>Complete Your Sign‑Up</Heading>
                 <Text fontSize="sm" color="gray.600" mb={4}>Fill out the details below to finalize your service request.</Text>
                 <Divider mb={6} />
+            <VStack spacing={5} align="stretch">
+
 
                   {/* Names */}
                   <HStack w="full">
@@ -506,29 +547,43 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     </FormControl>
                   </HStack>
 
-                  <HStack w="full">
-                    <FormControl isRequired>
-                      <FormLabel>Dog's Name #1</FormLabel>
-                      <Input
-                        name="dogName1"
-                        value={formData.dogName1}
-                        onChange={handleChange}
-                        borderColor="gray.300"
-                        focusBorderColor="brand.golden"
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel>Dog's Name #2</FormLabel>
-                      <Input
-                        name="dogName2"
-                        value={formData.dogName2}
-                        onChange={handleChange}
-                        borderColor="gray.300"
-                        focusBorderColor="brand.golden"
-                      />
-                    </FormControl>
-                  </HStack>
-
+                 {Array.from({ length: Math.min(formData.numDogs, 4) }, (_, i) => (
+                    <HStack w="full" key={i} align="flex-end">
+                      <FormControl isRequired>
+                        <FormLabel>Dog's Name #{i + 1}</FormLabel>
+                        <Input
+                          name={`dogName${i + 1}`}
+                          value={(formData as any)[`dogName${i + 1}`]}
+                          onChange={handleChange}
+                          borderColor="gray.300"
+                          focusBorderColor="brand.golden"
+                        />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel>Aggression 1-10 (10 = aggressive)</FormLabel>
+                        <NumberInput
+                          min={1}
+                          max={10}
+                          value={(formData as any)[`dogAggression${i + 1}`]}
+                          onChange={(val) =>
+                            handleNumberChange(
+                              val,
+                              `dogAggression${i + 1}` as keyof FormData
+                            )
+                          }
+                          borderColor="gray.300"
+                          focusBorderColor="brand.golden"
+                        >
+                          <NumberInputField />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </FormControl>
+                    </HStack>
+                  ))}
+                  
                   <FormControl>
                     <FormLabel>Where is your gate located?</FormLabel>
                     <Input
@@ -546,6 +601,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       <Checkbox isChecked={formData.cleanupNotifications.offSchedule} onChange={() => toggleNotification("offSchedule")}>Off‑Schedule</Checkbox>
                       <Checkbox isChecked={formData.cleanupNotifications.onTheWay} onChange={() => toggleNotification("onTheWay")}>On The Way</Checkbox>
                       <Checkbox isChecked={formData.cleanupNotifications.completed} onChange={() => toggleNotification("completed")}>Completed</Checkbox>
+                      <Checkbox value="sanitizing-service">Sanitizing Service – $10 / Visit</Checkbox>
+
                     </Stack>
                   </FormControl>
 
@@ -619,6 +676,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 >
   Complete Registration
 </Button>
+                </VStack>
+
               </Fade>
             </Box>
           )}
