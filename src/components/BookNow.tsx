@@ -107,7 +107,7 @@ const BookNow: React.FC = () => {
   const initialFormData: FormData = {
     /* Step‑1 */
     zipCode: "",
-    couponCode: "PROMO",
+    couponCode: "",
     lastCleanup: "",
     yardSize: "",
     numDogs: 1,
@@ -234,7 +234,10 @@ const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
     if (estimateFetched) setEstimate(calculateEstimate());
   }, [formData.additionalServices]);
 
-const calculateEstimate = (services: string[] = formData.additionalServices) => {  const dogs = Math.min(formData.numDogs, 4);   // cap at 4 for the table
+const calculateEstimate = (
+  services: string[] = formData.additionalServices
+) => {
+  const dogs = Math.min(formData.numDogs, 4); // cap at 4 for the table
   let price = 0;
 
   if (formData.frequency === "one-time") {
@@ -248,17 +251,27 @@ const calculateEstimate = (services: string[] = formData.additionalServices) => 
   let addOn = 0;
   services.forEach((s) => (addOn += ADDITIONAL_SERVICE_PRICES[s] || 0));
 
-  return `$${(price + addOn).toFixed(2)}`;};
-  /* ────────────────────────────────────────────── */
+  let total = price + addOn;
+  if (formData.couponCode.trim().toUpperCase() === "PROMO10") {
+    total *= 0.9;
+  }
+
+  return `$${total.toFixed(2)}`;
+};  /* ────────────────────────────────────────────── */
   /* ➋  “Get Estimate” click                       */
   /* ────────────────────────────────────────────── */
   const handleGetEstimate = () => {
     const zip = formData.zipCode.trim();
     if (!SERVED_ZIPS.includes(zip)) {
       setEstimate("");
-      setErrorMsg(
-        "Sorry, we don’t serve this area yet. Enter a ZIP code in our service area or check back as we expand."
-      );
+      setErrorMsg("Sorry, we don’t serve this area yet. Enter a ZIP code in our service area or check back as we expand.");
+      setEstimateFetched(true);
+      return;
+    }
+    const coupon = formData.couponCode.trim().toUpperCase();
+    if (coupon && coupon !== "PROMO10") {
+      setEstimate("");
+      setErrorMsg("Sorry, invalid promo code.");
       setEstimateFetched(true);
       return;
     }
