@@ -8,7 +8,6 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -23,7 +22,8 @@ import {
   useToast,
   VStack,
   Checkbox,
-  CheckboxGroup,
+  RadioGroup,
+  Radio,
   Divider,
   Slider,
   SliderTrack,
@@ -187,9 +187,10 @@ const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
       },
     }));
 
-  const handleCheckboxGroupChange = (values: string[]) => {
-    setFormData((prev) => ({ ...prev, additionalServices: values }));
-    if (estimateFetched) setEstimate(calculateEstimate(values));
+  const handleAdditionalServiceChange = (value: string) => {
+    const selected = value ? [value] : [];
+    setFormData((prev) => ({ ...prev, additionalServices: selected }));
+    if (estimateFetched) setEstimate(calculateEstimate(selected));
   };
 
   const handleStartOver = () => {
@@ -299,7 +300,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
   }
 };
 
-  const readOnlyStep1 = estimateFetched;
+  const readOnlyStep1 = false;
   /* ───────────── render ───────────── */
   return (
     <Box minH="100vh" w="full" py={10} px={4} bg="gray.50">
@@ -312,26 +313,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
           boxShadow="2xl"
           mb={6}
           position="relative"
-          opacity={estimateFetched ? 0.6 : 1}
           _hover={{ transform: "translateY(-2px)" }}
         >
-          {estimateFetched && (
-            <Box
-              position="absolute"
-             inset={0}
-              bg="rgba(0,0,0,0.4)"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              zIndex={1}
-              rounded="lg"
-              cursor="pointer"
-              onClick={handleStartOver}
-                          >
-              <Text fontWeight="bold" color="white">RESET</Text>
-            </Box>
-
-          )}
           <Heading size="lg" mb={2}>Book Now</Heading>
           <Text color="gray.600" mb={6}>
             Fill out the first section to see an instant estimate. Once you click “Get Estimate,” a second section will appear for final sign‑up!
@@ -339,7 +322,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
           <VStack align="start" spacing={6}>
             {/* ZIP + coupon */}
-            <HStack w="full" spacing={4}>
+            <Stack direction={{ base: "column", md: "row" }} w="full" spacing={4}>
               <FormControl isRequired>
                 <FormLabel>Zip Code</FormLabel>
                 <Input
@@ -365,10 +348,10 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   focusBorderColor="brand.golden"
                 />
               </FormControl>
-            </HStack>
+            </Stack>
 
             {/* Last cleanup + yard size */}
-            <HStack w="full" spacing={4}>
+            <Stack direction={{ base: "column", md: "row" }} w="full" spacing={4}>
 
 
               <FormControl isRequired>
@@ -387,10 +370,10 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   <option value="large">Large</option>
                 </Select>
               </FormControl>
-            </HStack>
+            </Stack>
 
             {/* Dogs + frequency */}
-            <HStack w="full" spacing={4}>
+            <Stack direction={{ base: "column", md: "row" }} w="full" spacing={4}>
               <FormControl isRequired>
                 <FormLabel>How Many Dogs?</FormLabel>
                 <NumberInput
@@ -427,7 +410,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   <option value="one-time">One Time</option>
                 </Select>
               </FormControl>
-            </HStack>
+            </Stack>
 
             {/* Button OR result */}
             {!estimateFetched ? (
@@ -466,11 +449,13 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                 ) : (
                   <>
                     <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
-                      Estimated Price: {estimate} / Week
+                      {formData.frequency === "one-time" ? `Price: ${estimate}` : `Estimated Price: ${estimate} / Week`}
                     </Text>
                     <Text fontSize="sm" mt={4}>
                       Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
                     </Text>
+                    <Text fontSize="md" fontWeight="medium" mt={4}>Continue to Step 2 below</Text>
+
                   </>
                 )}
               </Box>
@@ -490,7 +475,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
 
                   {/* Names */}
-                  <HStack w="full">
+                  <Stack direction={{ base: "column", md: "row" }} w="full">
                     <FormControl isRequired>
                       <FormLabel>First Name</FormLabel>
                       <Input
@@ -511,7 +496,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         focusBorderColor="brand.golden"
                       />
                     </FormControl>
-                  </HStack>
+                  </Stack>
 
                   <FormControl isRequired>
                     <FormLabel>Email Address</FormLabel>
@@ -550,7 +535,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     </Text>
                   </FormControl>
 
-                  <HStack w="full">
+                  <Stack direction={{ base: "column", md: "row" }} w="full">
                     <FormControl isRequired>
                       <FormLabel>City</FormLabel>
                       <Input
@@ -565,10 +550,10 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       <FormLabel>State</FormLabel>
                       <Text border="1px solid" borderColor="gray.300" borderRadius="md" p={2} bg="gray.50">California</Text>
                     </FormControl>
-                  </HStack>
+                  </Stack>
 
                  {Array.from({ length: Math.min(formData.numDogs, 4) }, (_, i) => (
-                    <HStack w="full" key={i} align="center">
+                    <Stack direction={{ base: "column", md: "row" }} w="full" key={i} align="center">
                       <FormControl isRequired>
                         <FormLabel>Dog's Name #{i + 1}</FormLabel>
                         <Input
@@ -603,7 +588,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         <Text mt={1} fontSize="sm" textAlign="center">
                           {(formData as any)[`dogAggression${i + 1}`]}
                         </Text>                      </FormControl>
-                    </HStack>
+                    </Stack>
                   ))}
                   
                   <FormControl>
@@ -668,13 +653,13 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
 
                   <FormControl>
                     <FormLabel>Additional Services</FormLabel>
-                    <CheckboxGroup value={formData.additionalServices} onChange={handleCheckboxGroupChange}>
+                    <RadioGroup value={formData.additionalServices[0] || ""} onChange={handleAdditionalServiceChange}>
                       <Stack>
-                        <Checkbox value="weekly-deodorizing">Weekly Deodorizing Service – $82.50 / Month</Checkbox>
-                        <Checkbox value="biweekly-deodorizing">Bi‑Weekly Deodorizing – $45.80 / Month</Checkbox>
-                        <Checkbox value="monthly-deodorizing">Monthly Deodorizing – $27.45 / Month</Checkbox>
+                        <Radio value="weekly-deodorizing">Weekly Deodorizing Service – $82.50 / Month</Radio>
+                        <Radio value="biweekly-deodorizing">Bi‑Weekly Deodorizing – $45.80 / Month</Radio>
+                        <Radio value="monthly-deodorizing">Monthly Deodorizing – $27.45 / Month</Radio>
                       </Stack>
-                    </CheckboxGroup>
+                    </RadioGroup>
                     <Text fontSize="sm" mt={2} color="gray.500">Additional services may be charged based on usage.</Text>
                   </FormControl>
 
