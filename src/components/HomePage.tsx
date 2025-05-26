@@ -9,13 +9,18 @@ import {
   Image,
   Container,
   SimpleGrid,
-  useColorModeValue,
+  chakra,
+  shouldForwardProp,
+  BoxProps,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { motion } from "framer-motion";
-import { BoxProps } from "@chakra-ui/react";
+import { isValidMotionProp, motion } from "framer-motion";
 
-const MotionBox = motion<BoxProps>(Box);
+// Use chakra() to wrap motion.div for Chakra compatibility
+const MotionBox = chakra(motion.div, {
+  shouldForwardProp: (prop) =>
+    isValidMotionProp(prop) || shouldForwardProp(prop),
+});
 
 const transitionStyles = {
   transition: "all 0.3s ease",
@@ -23,21 +28,14 @@ const transitionStyles = {
 };
 
 const HomePage: React.FC = () => {
-  const overlayBg = useColorModeValue(
-    "rgba(255,255,255,0.35)",
-    "rgba(0,0,0,0.35)"
-  );
-  const sectionHeadingColor = useColorModeValue(
-    "brand.darkBrown",
-    "brand.lightGreen"
-  );
+  const overlayBg = "rgba(255,255,255,0.35)";
+  const sectionHeadingColor = "brand.darkBrown";
 
   return (
     <>
       {/* HERO / HOME SECTION */}
       <MotionBox
         id="home"
-        as="section"
         position="relative"
         bg="brand.lightGreen"
         py={{ base: 24, md: 60 }}
@@ -59,15 +57,15 @@ const HomePage: React.FC = () => {
         transition={{ duration: 0.6 }}
       >
         <Container maxW="7xl" position="relative" zIndex={1}>
-<Heading
-  as="h1"
-  size={{ base: "xl", md: "3xl" }}
-  mb={4}
-  textShadow="1px 1px rgba(0,0,0,0.25)"
->
-  Say Goodbye To Messy Yards,<br />
-  We Scoop, You Relax!
-</Heading>
+          <Heading
+            as="h1"
+            size={{ base: "xl", md: "3xl" }}
+            mb={4}
+            textShadow="1px 1px rgba(0,0,0,0.25)"
+          >
+            Say Goodbye To Messy Yards,<br />
+            We Scoop, You Relax!
+          </Heading>
           <Text
             fontSize={{ base: "lg", md: "xl" }}
             maxW="620px"

@@ -13,28 +13,32 @@ import {
   Button,
   Text,
   Divider,
-    useColorMode,
-
+  chakra,
+  shouldForwardProp,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-import { motion } from "framer-motion";
+import { isValidMotionProp, motion } from "framer-motion";
 import logo from "../assets/logopoopatrol.jpg";
+
+// Setup chakra-wrapped motion components with proper prop forwarding
+const MotionChakraLink = chakra(motion(ChakraLink), {
+  shouldForwardProp: (prop) =>
+    isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
+const MotionChakraButton = chakra(motion(Button), {
+  shouldForwardProp: (prop) =>
+    isValidMotionProp(prop) || shouldForwardProp(prop),
+});
 
 const NavBar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const { colorMode, toggleColorMode } = useColorMode();
   const location = useLocation();
-
-  const MotionLink = motion(ChakraLink);
-  const MotionButton = motion(Button);
-
 
   const navItems = [
     { label: "Home", path: "/" },
-    
     { label: "Book Now", path: "/book-now" },
     { label: "Services", path: "/services" },
     { label: "About Us", path: "/about-us" },
@@ -52,7 +56,6 @@ const NavBar: React.FC = () => {
       top={0}
       w="100%"
       zIndex={1000}
-      // Give the NavBar a fixed height
       h={{ base: "80px", md: "100px" }}
     >
       <Flex
@@ -62,7 +65,6 @@ const NavBar: React.FC = () => {
         mx="auto"
         py={2}
         px={4}
-        // Ensure the content fits within the fixed height
         h="100%"
       >
         {/* Logo */}
@@ -75,9 +77,9 @@ const NavBar: React.FC = () => {
           onClick={() => (window.location.href = "/")}
         />
 
-
+        {/* Mobile Hamburger Icon */}
         {isMobile && (
-         <HStack>
+          <HStack>
             <IconButton
               icon={isOpen ? <FaTimes /> : <FaBars />}
               aria-label="Toggle Menu"
@@ -86,22 +88,14 @@ const NavBar: React.FC = () => {
               transition="all 0.3s ease"
               _hover={{ bg: "brand.golden" }}
             />
-            <IconButton
-              aria-label="Toggle color mode"
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              variant="ghost"
-              onClick={toggleColorMode}
-              transition="all 0.3s ease"
-              _hover={{ bg: "brand.golden" }}
-            />
           </HStack>
         )}
 
-        {/* Desktop Menu */}
+        {/* Desktop Nav Links */}
         {!isMobile && (
           <HStack as="nav" spacing={8} align="center">
             {navItems.map((item) => (
-              <MotionLink
+              <MotionChakraLink
                 key={item.path}
                 as={RouterLink}
                 to={item.path}
@@ -112,26 +106,18 @@ const NavBar: React.FC = () => {
                 _hover={{ textDecoration: "none", color: "brand.golden" }}
               >
                 {item.label}
-              </MotionLink>
+              </MotionChakraLink>
             ))}
-            <IconButton
-              aria-label="Toggle color mode"
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              variant="ghost"
-              onClick={toggleColorMode}
-              transition="all 0.3s ease"
-              _hover={{ bg: "brand.golden" }}
-            />
           </HStack>
         )}
       </Flex>
 
-      {/* Mobile Menu (collapsible) */}
+      {/* Mobile Drawer */}
       {isMobile && isOpen && (
         <Box bg="white" shadow="md" px={4} py={2}>
           <VStack align="start" spacing={4}>
             {navItems.map((item) => (
-              <MotionButton
+              <MotionChakraButton
                 key={item.path}
                 as={RouterLink}
                 to={item.path}
@@ -145,7 +131,7 @@ const NavBar: React.FC = () => {
                 onClick={onClose}
               >
                 {item.label}
-              </MotionButton>
+              </MotionChakraButton>
             ))}
           </VStack>
         </Box>

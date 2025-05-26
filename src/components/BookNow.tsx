@@ -25,7 +25,6 @@ import {
   Checkbox,
   CheckboxGroup,
   Divider,
-  CloseButton,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -317,13 +316,21 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
           _hover={{ transform: "translateY(-2px)" }}
         >
           {estimateFetched && (
-            <CloseButton
+            <Box
               position="absolute"
-              top={2}
-              right={2}
+             inset={0}
+              bg="rgba(0,0,0,0.4)"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              zIndex={1}
+              rounded="lg"
+              cursor="pointer"
               onClick={handleStartOver}
-              aria-label="Start New Estimate"
-            />
+                          >
+              <Text fontWeight="bold" color="white">RESET</Text>
+            </Box>
+
           )}
           <Heading size="lg" mb={2}>Book Now</Heading>
           <Text color="gray.600" mb={6}>
@@ -561,7 +568,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   </HStack>
 
                  {Array.from({ length: Math.min(formData.numDogs, 4) }, (_, i) => (
-                    <HStack w="full" key={i} align="flex-end">
+                    <HStack w="full" key={i} align="center">
                       <FormControl isRequired>
                         <FormLabel>Dog's Name #{i + 1}</FormLabel>
                         <Input
@@ -578,8 +585,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                           min={1}
                           max={10}
                           step={1}
-
+                          defaultValue={5}
                           value={(formData as any)[`dogAggression${i + 1}`]}
+                          mx="auto"
                           onChange={(val) =>
                             handleNumberChange(
                               String(val),

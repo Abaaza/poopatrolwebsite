@@ -60,9 +60,6 @@ const Footer: React.FC = () => {
                 <Link href="/book-now" _hover={{ textDecoration: "none" }}>
                   Book Now
                 </Link>
-                <Link href="/free-quote" _hover={{ textDecoration: "none" }}>
-                  Free Quote
-                </Link>
                 <Link href="/services" _hover={{ textDecoration: "none" }}>
                   Services
                 </Link>

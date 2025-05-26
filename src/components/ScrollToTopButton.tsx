@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { IconButton, useColorModeValue } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { ChevronUpIcon } from "@chakra-ui/icons";
 
 const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const bg = useColorModeValue("brand.golden", "brand.darkBrown");
-  const color = useColorModeValue("black", "brand.beige");
+  const bg = "brand.golden";
+  const color = "black";
 
   useEffect(() => {
     const handleScroll = () => {
