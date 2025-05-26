@@ -25,6 +25,11 @@ import {
   Checkbox,
   CheckboxGroup,
   Divider,
+  CloseButton,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
 } from "@chakra-ui/react";
 import emailjs from "@emailjs/browser";
 import { useNavigate } from "react-router-dom";
@@ -307,8 +312,19 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
           rounded="lg"
           boxShadow="2xl"
           mb={6}
+          position="relative"
+          opacity={estimateFetched ? 0.6 : 1}
           _hover={{ transform: "translateY(-2px)" }}
         >
+          {estimateFetched && (
+            <CloseButton
+              position="absolute"
+              top={2}
+              right={2}
+              onClick={handleStartOver}
+              aria-label="Start New Estimate"
+            />
+          )}
           <Heading size="lg" mb={2}>Book Now</Heading>
           <Text color="gray.600" mb={6}>
             Fill out the first section to see an instant estimate. Once you click “Get Estimate,” a second section will appear for final sign‑up!
@@ -453,9 +469,6 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
               </Box>
             )}
           </VStack>
-                    {estimateFetched && (
-            <Button mt={4} onClick={handleStartOver}>Start New Estimate</Button>
-          )}
         </Box>
 
         {/* ───────────── STEP‑2 ───────────── */}
@@ -561,26 +574,27 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       </FormControl>
                       <FormControl isRequired>
                         <FormLabel>Aggression 1-10 (10 = aggressive)</FormLabel>
-                        <NumberInput
+                        <Slider
                           min={1}
                           max={10}
+                          step={1}
+
                           value={(formData as any)[`dogAggression${i + 1}`]}
                           onChange={(val) =>
                             handleNumberChange(
-                              val,
+                              String(val),
                               `dogAggression${i + 1}` as keyof FormData
                             )
                           }
-                          borderColor="gray.300"
-                          focusBorderColor="brand.golden"
-                        >
-                          <NumberInputField />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </FormControl>
+                          >
+                          <SliderTrack>
+                            <SliderFilledTrack />
+                          </SliderTrack>
+                          <SliderThumb />
+                        </Slider>
+                        <Text mt={1} fontSize="sm" textAlign="center">
+                          {(formData as any)[`dogAggression${i + 1}`]}
+                        </Text>                      </FormControl>
                     </HStack>
                   ))}
                   
@@ -665,11 +679,15 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       <Text>I agree to the terms of service*</Text>
                     </Stack>
                   </FormControl>
-<Button
-  type="submit"
-  colorScheme="green"
-  w="full"
-  mt={4}
+
+                  <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                    Updated Estimate: {estimate}
+                  </Text>
+                  <Button
+                    type="submit"
+                    colorScheme="green"
+                    w="full"
+                    mt={4}
   isLoading={submitting}
   isDisabled={submitting}
   _hover={{ transform: "translateY(-1px)", boxShadow: "lg" }}
