@@ -676,7 +676,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   </FormControl>
 
                   <Text fontSize="xl" fontWeight="bold" textAlign="center">
-                    Updated Estimate: {estimate}
+                    Updated Price: {estimate}
                   </Text>
                   <Button
                     type="submit"
