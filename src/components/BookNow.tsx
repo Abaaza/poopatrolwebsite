@@ -465,7 +465,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
               <Button
                 colorScheme="green"
                 onClick={handleGetEstimate}
-                alignSelf="flex-start"
+                w="full"
                 _hover={{ transform: "translateY(-2px)", boxShadow: "lg" }}
               >
                 Get Estimate
@@ -500,6 +500,11 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
                       {formData.frequency === "one-time" ? `Price: ${estimate}` : `Estimated Price: ${estimate} / Week`}
                     </Text>
+                      {formData.couponCode.trim().toUpperCase() === "PROMO10" && (
+                      <Text fontSize="md" color="green.600" fontWeight="semibold" mt={2}>
+                        Coupon Code Applied, 10% OFF
+                      </Text>
+                    )}
                     <Text fontSize="sm" mt={4}>
                       Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
                     </Text>
@@ -508,9 +513,9 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   </>
                 )}
               </Box>
-                            <Button
+              <Button
                 mt={4}
-                alignSelf="flex-start"
+                w="full"
                 onClick={handleStartOver}
               >
                 Reset
@@ -726,7 +731,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                       </Stack>
                     </RadioGroup>
   <Checkbox
-                      mt={2}
+                      mt={5}
                       isChecked={formData.additionalServices.includes("sanitizing-service")}
                       onChange={handleSanitizingChange}
                     >
