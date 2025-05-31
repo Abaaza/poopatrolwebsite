@@ -521,9 +521,11 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                         Coupon Code Applied, 10% OFF
                       </Text>
                     )}
-                    <Text fontSize="sm" mt={4}>
-                      Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
-                    </Text>
+                       {formData.frequency !== "one-time" && (
+                        <Text fontSize="sm" mt={4}>
+                          Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
+                        </Text>
+                      )}
                     <Text fontSize="md" fontWeight="medium" mt={4}>Continue to Step 2 below</Text>
 
                   </>
