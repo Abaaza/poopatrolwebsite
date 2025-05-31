@@ -143,19 +143,34 @@ const BookNow: React.FC = () => {
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const SUBSCRIPTION_PRICES: Record<string, Record<number, number>> = {
-  "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },   // 4 visits /-mo
-  "bi-weekly":     { 1: 30.0, 2: 33.75, 3: 37.5, 4: 41.25 }, // 2 visits /-mo
-  "once-a-month":  { 1: 45.0, 2: 50.63, 3: 56.25, 4: 61.88 },// 1 visit  /-mo
-  "twice-a-week":  { 1: 18.0, 2: 20.25, 3: 22.5, 4: 24.75 }, // 8 visits /-mo
-};
-
-const ONE_TIME_PRICES: Record<number, number> = {
-  1: 50,
-  2: 65,
-  3: 80,
-  4: 95, // 4+ dogs can be handled with a “starts-at” note
-};
+  interface PriceTable {
+    [yard: string]: {
+      [frequency: string]: { [dogs: number]: number };
+    };
+  }
+  const PRICES: PriceTable = {
+    small: {
+      "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },
+      "bi-weekly":     { 1: 30.0, 2: 33.75, 3: 37.5, 4: 41.25 },
+      "once-a-month":  { 1: 45.0, 2: 50.63, 3: 56.25, 4: 61.88 },
+      "twice-a-week":  { 1: 18.0, 2: 20.25, 3: 22.5, 4: 24.75 },
+      "one-time":      { 1: 50, 2: 65, 3: 80, 4: 95 },
+    },
+    medium: {
+      "once-a-week":   { 1: 22.5, 2: 25.0, 3: 27.5, 4: 30.0 },
+      "bi-weekly":     { 1: 35.0, 2: 38.75, 3: 42.5, 4: 46.25 },
+      "once-a-month":  { 1: 55.0, 2: 60.63, 3: 66.25, 4: 71.88 },
+      "twice-a-week":  { 1: 19.25, 2: 21.5, 3: 23.75, 4: 26.0 },
+      "one-time":      { 1: 60, 2: 75, 3: 90, 4: 105 },
+    },
+    large: {
+      "once-a-week":   { 1: 26.25, 2: 28.75, 3: 31.25, 4: 33.75 },
+      "bi-weekly":     { 1: 42.5, 2: 46.25, 3: 50.0, 4: 53.75 },
+      "once-a-month":  { 1: 70.0, 2: 75.63, 3: 81.25, 4: 86.88 },
+      "twice-a-week":  { 1: 21.12, 2: 23.38, 3: 25.62, 4: 27.88 },
+      "one-time":      { 1: 75, 2: 90, 3: 105, 4: 120 },
+    },
+  };
 
 const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
   "weekly-deodorizing": 20.63,
@@ -238,14 +253,15 @@ const calculateEstimate = (
   services: string[] = formData.additionalServices
 ) => {
   const dogs = Math.min(formData.numDogs, 4); // cap at 4 for the table
+  const size = (formData.yardSize || "small") as keyof typeof PRICES;
+
   let price = 0;
 
   if (formData.frequency === "one-time") {
-    price = ONE_TIME_PRICES[dogs];
-    // optional yard-size bump only for 4+ dogs:
-    if (dogs === 4 && formData.yardSize === "large") price += 20;
+    price = PRICES[size]["one-time"][dogs];
+
   } else {
-    price = SUBSCRIPTION_PRICES[formData.frequency][dogs];
+    price = PRICES[size][formData.frequency][dogs];
   }
 
   let addOn = 0;
