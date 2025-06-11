@@ -190,7 +190,7 @@ i18n
             orderDetails: "Order Details",
             errorPlacingOrder: "There was an error placing your order. Please try again.",
             successPlacingOrder: "Order placed successfully!",
-            companyName: "Wall Masters",
+            companyName: "Poo Patrol",
             copyright: "© {{year}} COCO. All rights reserved.",
             contactInfo: "For Contact Call: 01222204651",
      
