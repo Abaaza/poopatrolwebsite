@@ -282,20 +282,45 @@ const calculateEstimate = (
   /* ➋  “Get Estimate” click                       */
   /* ────────────────────────────────────────────── */
   const handleGetEstimate = () => {
+    // Validate required fields first
+    if (!formData.zipCode.trim()) {
+      toast({
+        title: "ZIP code required",
+        description: "Please enter your ZIP code to get an estimate.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    if (!formData.yardSize) {
+      toast({
+        title: "Yard size required",
+        description: "Please select your yard size to get an accurate estimate.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
     const zip = formData.zipCode.trim();
     if (!SERVED_ZIPS.includes(zip)) {
       setEstimate("");
-      setErrorMsg("Sorry, we don’t serve this area yet. Enter a ZIP code in our service area or check back as we expand.");
+      setErrorMsg("Sorry, we don't serve this area yet. Enter a ZIP code in our service area or check back as we expand.");
       setEstimateFetched(true);
       return;
     }
+    
     const coupon = formData.couponCode.trim().toUpperCase();
     if (coupon && coupon !== "PROMO10" && coupon !== "RAYGROOMING") {
       setEstimate("");
-      setErrorMsg("Sorry, invalid promo code.");
+      setErrorMsg("Sorry, invalid promo code. Valid codes: PROMO10, RAYGROOMING");
       setEstimateFetched(true);
       return;
     }
+    
     setErrorMsg("");
     setEstimate(calculateEstimate());
     setEstimateFetched(true);
@@ -307,6 +332,52 @@ const calculateEstimate = (
 const handleFinalSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   if (submitting) return;
+  
+  // Detailed validation
+  const errors: string[] = [];
+  
+  if (!formData.firstName.trim()) errors.push("First name is required");
+  if (!formData.lastName.trim()) errors.push("Last name is required");
+  if (!formData.email.trim()) errors.push("Email is required");
+  if (!formData.homeAddress.trim()) errors.push("Home address is required");
+  if (!formData.cellPhone.trim()) errors.push("Phone number is required");
+  if (!formData.city.trim()) errors.push("City is required");
+  if (!formData.surfaceType.trim()) errors.push("Surface type is required");
+  
+  // Validate dog names based on number of dogs
+  for (let i = 1; i <= Math.min(formData.numDogs, 4); i++) {
+    if (!(formData as any)[`dogName${i}`]?.trim()) {
+      errors.push(`Dog #${i} name is required`);
+    }
+  }
+  
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (formData.email && !emailRegex.test(formData.email)) {
+    errors.push("Please enter a valid email address");
+  }
+  
+  // Phone validation (basic US phone)
+  const phoneRegex = /^[\d\s\-\(\)]+$/;
+  if (formData.cellPhone && !phoneRegex.test(formData.cellPhone)) {
+    errors.push("Please enter a valid phone number");
+  }
+  
+  if (!formData.agreeToTerms) {
+    errors.push("You must agree to the Terms of Service");
+  }
+  
+  if (errors.length > 0) {
+    toast({
+      title: "Please complete all required fields",
+      description: errors.join(", "),
+      status: "error",
+      duration: 6000,
+      isClosable: true,
+    });
+    return;
+  }
+  
   setSubmitting(true);
 
   const ref = "POO-" + Math.floor(100000 + Math.random() * 900000);
@@ -355,11 +426,23 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
     // reset Step-2 fields …
     /* (keep your existing reset block) */
 
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
+    let errorMessage = "Something went wrong sending your request.";
+    
+    if (err?.status === 400) {
+      errorMessage = "Invalid form data. Please check your entries.";
+    } else if (err?.status === 401 || err?.status === 403) {
+      errorMessage = "Email service authentication error. Please contact support.";
+    } else if (err?.text?.includes("email")) {
+      errorMessage = "Failed to send email. Please check your email address.";
+    } else if (!navigator.onLine) {
+      errorMessage = "No internet connection. Please check your connection and try again.";
+    }
+    
     toast({
-      title: "Uh-oh!",
-      description: "Something went wrong sending your request. Please try again later.",
+      title: "Failed to submit form",
+      description: errorMessage,
       status: "error",
       duration: 5000,
       isClosable: true,
@@ -419,8 +502,10 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
               </FormControl>
             </Stack>
 
-            {/* Yard size + Surface Type */}
+            {/* Last cleanup + yard size */}
             <Stack direction={{ base: "column", md: "row" }} w="full" spacing={4}>
+
+
               <FormControl isRequired>
                 <FormLabel>Yard Size</FormLabel>
                 <Select
@@ -436,19 +521,6 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   <option value="medium">Medium</option>
                   <option value="large">Large</option>
                 </Select>
-              </FormControl>
-
-              <FormControl isRequired>
-                <FormLabel>Surface Type</FormLabel>
-                <Input
-                  name="surfaceType"
-                  placeholder="e.g. Grass"
-                  value={formData.surfaceType}
-                  onChange={handleChange}
-                  isReadOnly={readOnlyStep1}
-                  borderColor="gray.300"
-                  focusBorderColor="brand.golden"
-                />
               </FormControl>
             </Stack>
 
@@ -692,6 +764,18 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Input
                       name="gateLocation"
                       value={formData.gateLocation}
+                      onChange={handleChange}
+                      borderColor="gray.300"
+                      focusBorderColor="brand.golden"
+                    />
+                  </FormControl>
+
+                  <FormControl isRequired>
+                    <FormLabel>Surface Type</FormLabel>
+                    <Input
+                      name="surfaceType"
+                      placeholder="e.g. Grass, Concrete, Dirt, etc."
+                      value={formData.surfaceType}
                       onChange={handleChange}
                       borderColor="gray.300"
                       focusBorderColor="brand.golden"
