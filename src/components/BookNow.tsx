@@ -774,7 +774,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <FormLabel>Surface Type</FormLabel>
                     <Input
                       name="surfaceType"
-                      placeholder="e.g. Grass, Concrete, Dirt, etc."
+                      placeholder="e.g. Grass, Gravel"
                       value={formData.surfaceType}
                       onChange={handleChange}
                       borderColor="gray.300"
