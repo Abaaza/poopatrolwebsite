@@ -274,7 +274,7 @@ const calculateEstimate = (
   if (couponCode === "PROMO10") {
     total *= 0.9;
   } else if (couponCode === "RAYGROOMING") {
-    total *= 0.8;
+    total *= 0.85;
   }
 
   return `$${total.toFixed(2)}`;
@@ -534,7 +534,12 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     </Text>
                       {(formData.couponCode.trim().toUpperCase() === "PROMO10" || formData.couponCode.trim().toUpperCase() === "RAYGROOMING") && (
                       <Text fontSize="md" color="green.600" fontWeight="semibold" mt={2}>
-                        Coupon Code Applied, {formData.couponCode.trim().toUpperCase() === "PROMO10" ? "10%" : "20%"} OFF
+                        Coupon Code Applied, {formData.couponCode.trim().toUpperCase() === "PROMO10" ? "10%" : "15%"} OFF
+                      </Text>
+                    )}
+                    {formData.frequency !== "one-time" && (
+                      <Text fontSize="sm" mt={4} color="green.600" fontWeight="medium">
+                        No initial fees! You pay the same rate from your first service.
                       </Text>
                     )}
                     <Text fontSize="md" fontWeight="medium" mt={4}>Continue to Step 2 below</Text>
