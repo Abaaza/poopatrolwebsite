@@ -67,6 +67,7 @@ interface FormData {
   yardSize: string;
   numDogs: number;
   frequency: string;
+  surfaceType: string;
   /* Step‑2 */
   firstName: string;
   lastName: string;
@@ -112,6 +113,7 @@ const BookNow: React.FC = () => {
     yardSize: "",
     numDogs: 1,
     frequency: "once-a-week",
+    surfaceType: "",
     /* Step‑2 */
     firstName: "",
     lastName: "",
@@ -268,8 +270,11 @@ const calculateEstimate = (
   services.forEach((s) => (addOn += ADDITIONAL_SERVICE_PRICES[s] || 0));
 
   let total = price + addOn;
-  if (formData.couponCode.trim().toUpperCase() === "PROMO10") {
+  const couponCode = formData.couponCode.trim().toUpperCase();
+  if (couponCode === "PROMO10") {
     total *= 0.9;
+  } else if (couponCode === "RAYGROOMING") {
+    total *= 0.8;
   }
 
   return `$${total.toFixed(2)}`;
@@ -285,7 +290,7 @@ const calculateEstimate = (
       return;
     }
     const coupon = formData.couponCode.trim().toUpperCase();
-    if (coupon && coupon !== "PROMO10") {
+    if (coupon && coupon !== "PROMO10" && coupon !== "RAYGROOMING") {
       setEstimate("");
       setErrorMsg("Sorry, invalid promo code.");
       setEstimateFetched(true);
@@ -414,10 +419,8 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
               </FormControl>
             </Stack>
 
-            {/* Last cleanup + yard size */}
+            {/* Yard size + Surface Type */}
             <Stack direction={{ base: "column", md: "row" }} w="full" spacing={4}>
-
-
               <FormControl isRequired>
                 <FormLabel>Yard Size</FormLabel>
                 <Select
@@ -433,6 +436,19 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                   <option value="medium">Medium</option>
                   <option value="large">Large</option>
                 </Select>
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Surface Type</FormLabel>
+                <Input
+                  name="surfaceType"
+                  placeholder="e.g. Grass"
+                  value={formData.surfaceType}
+                  onChange={handleChange}
+                  isReadOnly={readOnlyStep1}
+                  borderColor="gray.300"
+                  focusBorderColor="brand.golden"
+                />
               </FormControl>
             </Stack>
 
@@ -516,16 +532,11 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
                       {formData.frequency === "one-time" ? `Price: ${estimate}` : `Estimated Price: ${estimate} / Week`}
                     </Text>
-                      {formData.couponCode.trim().toUpperCase() === "PROMO10" && (
+                      {(formData.couponCode.trim().toUpperCase() === "PROMO10" || formData.couponCode.trim().toUpperCase() === "RAYGROOMING") && (
                       <Text fontSize="md" color="green.600" fontWeight="semibold" mt={2}>
-                        Coupon Code Applied, 10% OFF
+                        Coupon Code Applied, {formData.couponCode.trim().toUpperCase() === "PROMO10" ? "10%" : "20%"} OFF
                       </Text>
                     )}
-                       {formData.frequency !== "one-time" && (
-                        <Text fontSize="sm" mt={4}>
-                          Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
-                        </Text>
-                      )}
                     <Text fontSize="md" fontWeight="medium" mt={4}>Continue to Step 2 below</Text>
 
                   </>
