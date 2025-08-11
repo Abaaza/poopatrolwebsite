@@ -273,7 +273,7 @@ const calculateEstimate = (
   const couponCode = formData.couponCode.trim().toUpperCase();
   if (couponCode === "PROMO10") {
     total *= 0.9;
-  } else if (couponCode === "raysgrooming") {
+  } else if (couponCode === "RAYSGROOMING") {
     total *= 0.85;
   }
 
@@ -314,9 +314,9 @@ const calculateEstimate = (
     }
     
     const coupon = formData.couponCode.trim().toUpperCase();
-    if (coupon && coupon !== "PROMO10" && coupon !== "raysgrooming") {
+    if (coupon && coupon !== "PROMO10" && coupon !== "RAYSGROOMING") {
       setEstimate("");
-      setErrorMsg("Sorry, invalid promo code. Valid codes: PROMO10, raysgrooming");
+      setErrorMsg("Sorry, invalid promo code.");
       setEstimateFetched(true);
       return;
     }
@@ -604,7 +604,7 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
                       {formData.frequency === "one-time" ? `Price: ${estimate}` : `Estimated Price: ${estimate} / Week`}
                     </Text>
-                      {(formData.couponCode.trim().toUpperCase() === "PROMO10" || formData.couponCode.trim().toUpperCase() === "raysgrooming") && (
+                      {(formData.couponCode.trim().toUpperCase() === "PROMO10" || formData.couponCode.trim().toUpperCase() === "RAYSGROOMING") && (
                       <Text fontSize="md" color="green.600" fontWeight="semibold" mt={2}>
                         Coupon Code Applied, {formData.couponCode.trim().toUpperCase() === "PROMO10" ? "10%" : "15%"} OFF
                       </Text>
