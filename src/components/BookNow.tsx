@@ -67,6 +67,7 @@ interface FormData {
   yardSize: string;
   numDogs: number;
   frequency: string;
+  surfaceType: string;
   /* Step‑2 */
   firstName: string;
   lastName: string;
@@ -112,6 +113,7 @@ const BookNow: React.FC = () => {
     yardSize: "",
     numDogs: 1,
     frequency: "once-a-week",
+    surfaceType: "",
     /* Step‑2 */
     firstName: "",
     lastName: "",
@@ -143,19 +145,34 @@ const BookNow: React.FC = () => {
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  const SUBSCRIPTION_PRICES: Record<string, Record<number, number>> = {
-  "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },   // 4 visits /-mo
-  "bi-weekly":     { 1: 30.0, 2: 33.75, 3: 37.5, 4: 41.25 }, // 2 visits /-mo
-  "once-a-month":  { 1: 45.0, 2: 50.63, 3: 56.25, 4: 61.88 },// 1 visit  /-mo
-  "twice-a-week":  { 1: 18.0, 2: 20.25, 3: 22.5, 4: 24.75 }, // 8 visits /-mo
-};
-
-const ONE_TIME_PRICES: Record<number, number> = {
-  1: 50,
-  2: 65,
-  3: 80,
-  4: 95, // 4+ dogs can be handled with a “starts-at” note
-};
+  interface PriceTable {
+    [yard: string]: {
+      [frequency: string]: { [dogs: number]: number };
+    };
+  }
+  const PRICES: PriceTable = {
+    small: {
+      "once-a-week":   { 1: 20.0, 2: 22.5, 3: 25.0, 4: 27.5 },
+      "bi-weekly":     { 1: 30.0, 2: 33.75, 3: 37.5, 4: 41.25 },
+      "once-a-month":  { 1: 45.0, 2: 50.63, 3: 56.25, 4: 61.88 },
+      "twice-a-week":  { 1: 18.0, 2: 20.25, 3: 22.5, 4: 24.75 },
+      "one-time":      { 1: 50, 2: 65, 3: 80, 4: 95 },
+    },
+    medium: {
+      "once-a-week":   { 1: 22.5, 2: 25.0, 3: 27.5, 4: 30.0 },
+      "bi-weekly":     { 1: 35.0, 2: 38.75, 3: 42.5, 4: 46.25 },
+      "once-a-month":  { 1: 55.0, 2: 60.63, 3: 66.25, 4: 71.88 },
+      "twice-a-week":  { 1: 19.25, 2: 21.5, 3: 23.75, 4: 26.0 },
+      "one-time":      { 1: 60, 2: 75, 3: 90, 4: 105 },
+    },
+    large: {
+      "once-a-week":   { 1: 26.25, 2: 28.75, 3: 31.25, 4: 33.75 },
+      "bi-weekly":     { 1: 42.5, 2: 46.25, 3: 50.0, 4: 53.75 },
+      "once-a-month":  { 1: 70.0, 2: 75.63, 3: 81.25, 4: 86.88 },
+      "twice-a-week":  { 1: 21.12, 2: 23.38, 3: 25.62, 4: 27.88 },
+      "one-time":      { 1: 75, 2: 90, 3: 105, 4: 120 },
+    },
+  };
 
 const ADDITIONAL_SERVICE_PRICES: Record<string, number> = {
   "weekly-deodorizing": 20.63,
@@ -238,22 +255,26 @@ const calculateEstimate = (
   services: string[] = formData.additionalServices
 ) => {
   const dogs = Math.min(formData.numDogs, 4); // cap at 4 for the table
+  const size = (formData.yardSize || "small") as keyof typeof PRICES;
+
   let price = 0;
 
   if (formData.frequency === "one-time") {
-    price = ONE_TIME_PRICES[dogs];
-    // optional yard-size bump only for 4+ dogs:
-    if (dogs === 4 && formData.yardSize === "large") price += 20;
+    price = PRICES[size]["one-time"][dogs];
+
   } else {
-    price = SUBSCRIPTION_PRICES[formData.frequency][dogs];
+    price = PRICES[size][formData.frequency][dogs];
   }
 
   let addOn = 0;
   services.forEach((s) => (addOn += ADDITIONAL_SERVICE_PRICES[s] || 0));
 
   let total = price + addOn;
-  if (formData.couponCode.trim().toUpperCase() === "PROMO10") {
+  const couponCode = formData.couponCode.trim().toUpperCase();
+  if (couponCode === "PROMO10") {
     total *= 0.9;
+  } else if (couponCode === "RAYSGROOMING") {
+    total *= 0.85;
   }
 
   return `$${total.toFixed(2)}`;
@@ -261,20 +282,45 @@ const calculateEstimate = (
   /* ➋  “Get Estimate” click                       */
   /* ────────────────────────────────────────────── */
   const handleGetEstimate = () => {
+    // Validate required fields first
+    if (!formData.zipCode.trim()) {
+      toast({
+        title: "ZIP code required",
+        description: "Please enter your ZIP code to get an estimate.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    if (!formData.yardSize) {
+      toast({
+        title: "Yard size required",
+        description: "Please select your yard size to get an accurate estimate.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
     const zip = formData.zipCode.trim();
     if (!SERVED_ZIPS.includes(zip)) {
       setEstimate("");
-      setErrorMsg("Sorry, we don’t serve this area yet. Enter a ZIP code in our service area or check back as we expand.");
+      setErrorMsg("Sorry, we don't serve this area yet. Enter a ZIP code in our service area or check back as we expand.");
       setEstimateFetched(true);
       return;
     }
+    
     const coupon = formData.couponCode.trim().toUpperCase();
-    if (coupon && coupon !== "PROMO10") {
+    if (coupon && coupon !== "PROMO10" && coupon !== "RAYSGROOMING") {
       setEstimate("");
       setErrorMsg("Sorry, invalid promo code.");
       setEstimateFetched(true);
       return;
     }
+    
     setErrorMsg("");
     setEstimate(calculateEstimate());
     setEstimateFetched(true);
@@ -286,6 +332,52 @@ const calculateEstimate = (
 const handleFinalSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   if (submitting) return;
+  
+  // Detailed validation
+  const errors: string[] = [];
+  
+  if (!formData.firstName.trim()) errors.push("First name is required");
+  if (!formData.lastName.trim()) errors.push("Last name is required");
+  if (!formData.email.trim()) errors.push("Email is required");
+  if (!formData.homeAddress.trim()) errors.push("Home address is required");
+  if (!formData.cellPhone.trim()) errors.push("Phone number is required");
+  if (!formData.city.trim()) errors.push("City is required");
+  if (!formData.surfaceType.trim()) errors.push("Surface type is required");
+  
+  // Validate dog names based on number of dogs
+  for (let i = 1; i <= Math.min(formData.numDogs, 4); i++) {
+    if (!(formData as any)[`dogName${i}`]?.trim()) {
+      errors.push(`Dog #${i} name is required`);
+    }
+  }
+  
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (formData.email && !emailRegex.test(formData.email)) {
+    errors.push("Please enter a valid email address");
+  }
+  
+  // Phone validation (basic US phone)
+  const phoneRegex = /^[\d\s\-\(\)]+$/;
+  if (formData.cellPhone && !phoneRegex.test(formData.cellPhone)) {
+    errors.push("Please enter a valid phone number");
+  }
+  
+  if (!formData.agreeToTerms) {
+    errors.push("You must agree to the Terms of Service");
+  }
+  
+  if (errors.length > 0) {
+    toast({
+      title: "Please complete all required fields",
+      description: errors.join(", "),
+      status: "error",
+      duration: 6000,
+      isClosable: true,
+    });
+    return;
+  }
+  
   setSubmitting(true);
 
   const ref = "POO-" + Math.floor(100000 + Math.random() * 900000);
@@ -334,11 +426,23 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
     // reset Step-2 fields …
     /* (keep your existing reset block) */
 
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
+    let errorMessage = "Something went wrong sending your request.";
+    
+    if (err?.status === 400) {
+      errorMessage = "Invalid form data. Please check your entries.";
+    } else if (err?.status === 401 || err?.status === 403) {
+      errorMessage = "Email service authentication error. Please contact support.";
+    } else if (err?.text?.includes("email")) {
+      errorMessage = "Failed to send email. Please check your email address.";
+    } else if (!navigator.onLine) {
+      errorMessage = "No internet connection. Please check your connection and try again.";
+    }
+    
     toast({
-      title: "Uh-oh!",
-      description: "Something went wrong sending your request. Please try again later.",
+      title: "Failed to submit form",
+      description: errorMessage,
       status: "error",
       duration: 5000,
       isClosable: true,
@@ -500,14 +604,16 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Text fontSize="2xl" fontWeight="bold" color="brand.darkBrown" mt={10}>
                       {formData.frequency === "one-time" ? `Price: ${estimate}` : `Estimated Price: ${estimate} / Week`}
                     </Text>
-                      {formData.couponCode.trim().toUpperCase() === "PROMO10" && (
+                      {(formData.couponCode.trim().toUpperCase() === "PROMO10" || formData.couponCode.trim().toUpperCase() === "RAYSGROOMING") && (
                       <Text fontSize="md" color="green.600" fontWeight="semibold" mt={2}>
-                        Coupon Code Applied, 10% OFF
+                        Coupon Code Applied, {formData.couponCode.trim().toUpperCase() === "PROMO10" ? "10%" : "15%"} OFF
                       </Text>
                     )}
-                    <Text fontSize="sm" mt={4}>
-                      Initial cleanups start at $20 for one dog, $35 for two, $50 for three, and $60 for four dogs, based on a standard 1/8-acre yard. One promotion per customer. Discounts do not apply to one-time cleanups. New monthly subscribers receive their second cleanup free — offer valid for new customers only.
-                    </Text>
+                    {formData.frequency !== "one-time" && (
+                      <Text fontSize="sm" mt={4} color="green.600" fontWeight="medium">
+                        No initial fees! You pay the same rate from your first service.
+                      </Text>
+                    )}
                     <Text fontSize="md" fontWeight="medium" mt={4}>Continue to Step 2 below</Text>
 
                   </>
@@ -658,6 +764,18 @@ const handleFinalSubmit = async (e: React.FormEvent) => {
                     <Input
                       name="gateLocation"
                       value={formData.gateLocation}
+                      onChange={handleChange}
+                      borderColor="gray.300"
+                      focusBorderColor="brand.golden"
+                    />
+                  </FormControl>
+
+                  <FormControl isRequired>
+                    <FormLabel>Surface Type</FormLabel>
+                    <Input
+                      name="surfaceType"
+                      placeholder="e.g. Grass, Gravel"
+                      value={formData.surfaceType}
                       onChange={handleChange}
                       borderColor="gray.300"
                       focusBorderColor="brand.golden"
