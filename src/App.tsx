@@ -1,11 +1,12 @@
 // src/App.tsx
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { ChakraProvider, Box, Spinner, Center } from "@chakra-ui/react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import customTheme from "./components/theme";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import FloatingContact from "./components/FloatingContact";
 
 import ScrollToTop from "./components/ScrollToTop";
 import ScrollToTopButton from "./components/ScrollToTopButton";
@@ -42,7 +43,7 @@ function RouterContent() {
     <>
       <LoadingOverlay isLoading={isLoading} />
       <NavBar />
-      <Box mt={{ base: "60px", md: "75px" }}>
+      <Box mt={{ base: "80px", md: "100px" }}>
         <AnimatePresence mode="wait">
             <Suspense
             fallback={
@@ -54,8 +55,9 @@ function RouterContent() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><HomePage /></PageWrapper>} />
               <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
-              
+
               <Route path="/book-now" element={<PageWrapper><BookNow /></PageWrapper>} />
+              <Route path="/free-quote" element={<Navigate to="/book-now" replace />} />
               <Route path="/about-us" element={<PageWrapper><AboutUs /></PageWrapper>} />
               <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
               <Route path="/residential" element={<PageWrapper><Residential /></PageWrapper>} />
@@ -69,6 +71,7 @@ function RouterContent() {
         </AnimatePresence>
       </Box>
       <ScrollToTopButton />
+      <FloatingContact />
       <Footer />
     </>
   );

@@ -24,12 +24,14 @@ const customTheme = extendTheme({
     heading: "'Poppins', 'Open Sans', sans-serif",
     body: "'Open Sans', sans-serif",
   },
-  // optional global style overrides
   styles: {
     global: {
       body: {
-        bg: "brand.lightGreen",
+        bg: "white",
         color: "brand.darkBrown",
+      },
+      html: {
+        scrollBehavior: "smooth",
       },
     },
   },

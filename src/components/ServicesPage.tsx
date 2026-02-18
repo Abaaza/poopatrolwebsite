@@ -1,144 +1,243 @@
-// src/components/ServicesPage.tsx
 import React from "react";
 import {
   Box,
-  ChakraProvider,
   Container,
   Heading,
   Text,
-  UnorderedList,
-  ListItem,
-  Link as ChakraLink,
-  extendTheme,
+  SimpleGrid,
+  Button,
+  Icon,
+  VStack,
+  Flex,
+  Badge,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { FaHome, FaBuilding, FaSprayCan, FaArrowRight, FaCheckCircle } from "react-icons/fa";
+import SEO from "./SEO";
 
-const theme = extendTheme({
-  colors: {
-    brand: {
-      darkBrown: "#522a06",
-      lightGreen: "#d7e5b4",
-      golden: "#e5ab30",
-      brightGreen: "#8bc42e",
-    },
+const services = [
+  {
+    icon: FaHome,
+    title: "Residential Cleanup",
+    description:
+      "Keep your home yard pristine with our flexible scheduling options. Weekly, bi-weekly, one-time, or monthly visits tailored to your needs.",
+    features: [
+      "Weekly & bi-weekly plans",
+      "One-time deep cleanups",
+      "Spring seasonal specials",
+      "Free first visit for subscribers",
+    ],
+    link: "/residential",
+    badge: "Most Popular",
   },
-});
+  {
+    icon: FaBuilding,
+    title: "Commercial Services",
+    description:
+      "Professional waste management for HOAs, apartment complexes, dog parks, and pet-friendly businesses with custom scheduling.",
+    features: [
+      "Custom property plans",
+      "Waste station management",
+      "Detailed site reports",
+      "Insured & bonded team",
+    ],
+    link: "/commercial",
+    badge: "For Business",
+  },
+  {
+    icon: FaSprayCan,
+    title: "Deodorizing & Sanitizing",
+    description:
+      "Eliminate odors and bacteria with our eco-friendly treatments. Keep your yard safe, fresh, and pleasant for pets and people.",
+    features: [
+      "Pet-safe formula",
+      "Kills bacteria & odors",
+      "Great for high-traffic areas",
+      "Perfect add-on service",
+    ],
+    link: "/deodorizing",
+    badge: "Add-On",
+  },
+];
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": services.map((s, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "item": {
+      "@type": "Service",
+      "name": s.title,
+      "description": s.description,
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "Poo Patrol Cleaning",
+      },
+    },
+  })),
+};
 
 const ServicesPage: React.FC = () => {
   return (
-    <ChakraProvider theme={theme}>
+    <>
+      <SEO
+        title="Our Services – Dog Waste Removal & Yard Sanitizing"
+        description="Residential and commercial dog waste removal, yard deodorizing, and sanitizing services in Northridge and the San Fernando Valley. Flexible plans for every need."
+        canonical="/services"
+        schema={serviceSchema}
+      />
+
+      {/* Hero Banner */}
       <Box
-        bg="brand.lightGreen"
-        py={{ base: 10, md: 20 }}
-        minH="100vh"
-        display="flex"
-        alignItems="center"
+        bg="brand.brightGreen"
+        py={{ base: 16, md: 24 }}
+        textAlign="center"
+        position="relative"
+        overflow="hidden"
+        _before={{
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bg: "linear-gradient(135deg, rgba(139,196,46,0.9) 0%, rgba(74,151,32,0.95) 100%)",
+          zIndex: 0,
+        }}
       >
-        <Container
-          maxW="160vh"
-          bg="white"
-          p={{ base: 6, md: 10 }}
-          borderRadius="md"
-          boxShadow="md"
-        >
-          {/* Main Heading */}
-          <Heading as="h1" size="xl" color="brand.darkBrown" mb={4}>
-            What We Do&nbsp;Best
+        <Container maxW="5xl" position="relative" zIndex={1}>
+          <Heading
+            as="h1"
+            size={{ base: "xl", md: "2xl" }}
+            color="white"
+            mb={4}
+            textShadow="0 2px 4px rgba(0,0,0,0.2)"
+          >
+            What We Do Best
           </Heading>
-
-          {/* Intro */}
-          <Text mb={4}>
-            At&nbsp;Poo&nbsp;Patrol, we’re not just picking up poop — we’re
-            protecting lawns, saving noses, and giving pet owners their yards
-            back. Our mission is simple: cleaner spaces, happier pets, and zero
-            mess left behind.
-          </Text>
-
-          <Text mb={4}>
-            We’re proud to offer a full range of dog-waste removal solutions for
-            homes, apartments, parks, HOAs, and anywhere dogs do their business.
-          </Text>
-
-          <Text mb={6}>
-            Whether you’ve got a backyard bomb zone or manage a pup-packed
-            property, our trained scoop pros show up on time, get the job done
-            right, and leave your space fresh, poop-free, and ready to enjoy.
-          </Text>
-
-          {/* Core Services */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            Our Core Services Include:
-          </Heading>
-          <UnorderedList ml={6} mb={6}>
-            <ListItem>
-              <strong>Routine Dog-Poop Scooping</strong> — Weekly, bi-weekly, or
-              as needed
-            </ListItem>
-            <ListItem>
-              <strong>One-Time Cleanups</strong> — Perfect for parties,
-              move-ins/outs, or “oh crap” moments
-            </ListItem>
-            <ListItem>
-              <strong>Commercial Property Patrol</strong> — Reliable scooping
-              for HOAs, apartment complexes, and pet-friendly businesses
-            </ListItem>
-            <ListItem>
-              <strong>Yard Deodorizing&nbsp;&amp;&nbsp;Sanitizing</strong> —
-              Eco-friendly treatments that eliminate odor and bacteria after we
-              scoop
-            </ListItem>
-          </UnorderedList>
-
-          <Text mb={6}>
-            All services are handled with care, professionalism, and a touch of
-            tail-wagging fun.
-          </Text>
-
-          {/* Reliability */}
-          <Heading as="h2" size="md" color="brand.darkBrown" mb={2}>
-            We’re Poop People You Can Count&nbsp;On
-          </Heading>
-          <Text mb={6}>
-            We show up in uniform, on time, and ready to roll. No cutting
-            corners, no skipped scoops. Just clean lawns, happy paws, and
-            satisfied clients across the map.
-          </Text>
-
-          {/* Links to service pages */}
-          <Text mb={4}>
-            Want to see what plan fits your turf? Check out our specific service
-            pages below:
-          </Text>
-          <UnorderedList ml={6} mb={8}>
-            <ListItem>
-              <ChakraLink as={RouterLink} to="/residential" color="brand.golden">
-                Residential&nbsp;Cleanups
-              </ChakraLink>
-            </ListItem>
-            <ListItem>
-              <ChakraLink as={RouterLink} to="/commercial" color="brand.golden">
-                Commercial&nbsp;Cleanups
-              </ChakraLink>
-            </ListItem>
-            <ListItem>
-              <ChakraLink
-                as={RouterLink}
-                to="/deodorizing"
-                color="brand.golden"
-              >
-                Deodorizing&nbsp;&amp;&nbsp;Sanitizing&nbsp;Add-Ons
-              </ChakraLink>
-            </ListItem>
-          </UnorderedList>
-
-          {/* Closing */}
-          <Text fontWeight="bold">
-            Let us handle the doo so you don’t have to. <br />
-            Poo&nbsp;Patrol — cleaner yards, happier pets, guaranteed.
+          <Text
+            fontSize={{ base: "lg", md: "xl" }}
+            color="whiteAlpha.900"
+            maxW="600px"
+            mx="auto"
+          >
+            Professional poop-scooping, sanitizing, and odor-control solutions
+            for every type of property across the San Fernando Valley.
           </Text>
         </Container>
       </Box>
-    </ChakraProvider>
+
+      {/* Services Grid */}
+      <Box as="section" py={{ base: 14, md: 20 }} bg="white">
+        <Container maxW="7xl">
+          <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={8}>
+            {services.map((service) => (
+              <Box
+                key={service.title}
+                bg="white"
+                rounded="xl"
+                overflow="hidden"
+                shadow="lg"
+                border="1px solid"
+                borderColor="gray.100"
+                transition="all 0.3s ease"
+                _hover={{
+                  transform: "translateY(-8px)",
+                  shadow: "2xl",
+                  borderColor: "brand.brightGreen",
+                }}
+              >
+                {/* Card Header */}
+                <Box
+                  bg="linear-gradient(135deg, #8bc42e 0%, #4a9720 100%)"
+                  py={8}
+                  textAlign="center"
+                  position="relative"
+                >
+                  <Badge
+                    position="absolute"
+                    top={3}
+                    right={3}
+                    bg="brand.golden"
+                    color="black"
+                    px={3}
+                    py={1}
+                    rounded="full"
+                    fontSize="xs"
+                    fontWeight="bold"
+                  >
+                    {service.badge}
+                  </Badge>
+                  <Icon as={service.icon} w={12} h={12} color="white" mb={3} />
+                  <Heading as="h2" size="lg" color="white">
+                    {service.title}
+                  </Heading>
+                </Box>
+
+                {/* Card Body */}
+                <VStack p={6} spacing={4} align="stretch">
+                  <Text color="gray.600" lineHeight={1.7}>
+                    {service.description}
+                  </Text>
+
+                  <VStack align="start" spacing={2} pt={2}>
+                    {service.features.map((feature) => (
+                      <Flex key={feature} align="center" gap={2}>
+                        <Icon as={FaCheckCircle} color="brand.brightGreen" flexShrink={0} />
+                        <Text fontSize="sm" color="gray.700">
+                          {feature}
+                        </Text>
+                      </Flex>
+                    ))}
+                  </VStack>
+
+                  <Button
+                    as={RouterLink}
+                    to={service.link}
+                    bg="brand.golden"
+                    color="black"
+                    size="lg"
+                    mt={4}
+                    rightIcon={<FaArrowRight />}
+                    transition="all 0.3s ease"
+                    _hover={{ bg: "brand.brightGreen", color: "white" }}
+                  >
+                    Learn More
+                  </Button>
+                </VStack>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Container>
+      </Box>
+
+      {/* Why Poo Patrol */}
+      <Box as="section" py={{ base: 14, md: 20 }} bg="brand.beige">
+        <Container maxW="5xl" textAlign="center">
+          <Heading as="h2" size={{ base: "lg", md: "xl" }} color="brand.darkBrown" mb={4}>
+            We're Poop People You Can Count On
+          </Heading>
+          <Text fontSize={{ base: "md", md: "lg" }} color="gray.600" maxW="700px" mx="auto" mb={8} lineHeight={1.8}>
+            We show up in uniform, on time, and ready to roll. No cutting
+            corners, no skipped scoops. Just clean lawns, happy paws, and
+            satisfied clients across the San Fernando Valley.
+          </Text>
+          <Button
+            as={RouterLink}
+            to="/book-now"
+            bg="brand.brightGreen"
+            color="white"
+            size="lg"
+            px={10}
+            transition="all 0.3s ease"
+            _hover={{ bg: "brand.darkGreen", transform: "translateY(-2px)" }}
+          >
+            Book Your Cleanup Today
+          </Button>
+        </Container>
+      </Box>
+    </>
   );
 };
 
