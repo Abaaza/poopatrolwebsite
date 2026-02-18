@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
   return (
     <Box
       as="header"
-      bg="white"
+      bg="brand.lightGreen"
       color="brand.darkBrown"
       boxShadow="0 2px 20px rgba(0,0,0,0.08)"
       position="fixed"
@@ -41,8 +41,6 @@ const NavBar: React.FC = () => {
       w="100%"
       zIndex={1000}
       h={{ base: "80px", md: "100px" }}
-      backdropFilter="blur(10px)"
-      backgroundColor="rgba(255,255,255,0.97)"
     >
       <Flex
         align="center"
@@ -161,12 +159,12 @@ const NavBar: React.FC = () => {
       {/* Mobile Drawer */}
       {isMobile && isOpen && (
         <Box
-          bg="white"
+          bg="brand.lightGreen"
           shadow="xl"
           px={4}
           py={4}
           borderTop="1px solid"
-          borderColor="gray.100"
+          borderColor="brand.darkBrown"
         >
           <VStack align="stretch" spacing={1}>
             {navItems.map((item) => (
