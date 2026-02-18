@@ -30,18 +30,14 @@ import {
   FaCheckCircle,
   FaMapMarkerAlt,
   FaHeart,
-  FaGoogle,
-  FaExternalLinkAlt,
 } from "react-icons/fa";
 import SEO from "./SEO";
+import GoogleReviews from "./GoogleReviews";
 
 const MotionBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
     isValidMotionProp(prop) || shouldForwardProp(prop),
 });
-
-const GOOGLE_MAPS_URL =
-  "https://www.google.com/maps/place/Poopatrol/@34.2500741,-118.5220439,570m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa8454316eaccb7c9:0x5514a013f85d05bb!8m2!3d34.2500741!4d-118.5194636!16s%2Fg%2F11xdtch__p";
 
 const whyChooseUs = [
   {
@@ -440,107 +436,7 @@ const HomePage: React.FC = () => {
       </Box>
 
       {/* ═══════════ GOOGLE REVIEWS ═══════════ */}
-      <Box as="section" py={{ base: 16, md: 24 }} bg="gray.50">
-        <Container maxW="5xl">
-          <VStack spacing={6} textAlign="center">
-            <Text
-              color="brand.brightGreen"
-              fontWeight="bold"
-              textTransform="uppercase"
-              letterSpacing="wider"
-              fontSize="sm"
-            >
-              Customer Reviews
-            </Text>
-            <Heading
-              as="h2"
-              size={{ base: "xl", md: "2xl" }}
-              color="brand.darkBrown"
-            >
-              See What Our Customers Say on Google
-            </Heading>
-
-            {/* Google Rating Card */}
-            <Box
-              bg="white"
-              rounded="2xl"
-              shadow="xl"
-              p={{ base: 8, md: 12 }}
-              maxW="600px"
-              w="full"
-              border="1px solid"
-              borderColor="gray.100"
-              transition="all 0.3s ease"
-              _hover={{ shadow: "2xl", transform: "translateY(-4px)" }}
-            >
-              <VStack spacing={5}>
-                <Icon as={FaGoogle} w={10} h={10} color="#4285F4" />
-                <HStack spacing={2}>
-                  <Text fontSize="5xl" fontWeight="800" color="brand.darkBrown" lineHeight={1}>
-                    5.0
-                  </Text>
-                  <VStack spacing={0} align="start">
-                    <HStack spacing={1}>
-                      {[...Array(5)].map((_, i) => (
-                        <Icon key={i} as={FaStar} color="brand.golden" w={5} h={5} />
-                      ))}
-                    </HStack>
-                    <Text fontSize="sm" color="gray.500" fontWeight="medium">
-                      on Google Maps
-                    </Text>
-                  </VStack>
-                </HStack>
-                <Text color="gray.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.7}>
-                  Our customers love us! Check out our reviews on Google to see
-                  why pet owners across the San Fernando Valley trust Poo Patrol
-                  for their yard cleanup needs.
-                </Text>
-                <HStack
-                  spacing={4}
-                  pt={2}
-                  flexWrap="wrap"
-                  justify="center"
-                >
-                  <Button
-                    as="a"
-                    href={GOOGLE_MAPS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    bg="brand.brightGreen"
-                    color="white"
-                    size="lg"
-                    px={8}
-                    fontWeight="bold"
-                    leftIcon={<FaGoogle />}
-                    rightIcon={<FaExternalLinkAlt />}
-                    transition="all 0.3s ease"
-                    _hover={{ bg: "brand.darkGreen", transform: "translateY(-2px)", boxShadow: "lg" }}
-                  >
-                    Read Our Reviews
-                  </Button>
-                  <Button
-                    as="a"
-                    href={GOOGLE_MAPS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="outline"
-                    borderColor="brand.golden"
-                    color="brand.golden"
-                    size="lg"
-                    px={8}
-                    fontWeight="bold"
-                    leftIcon={<FaStar />}
-                    transition="all 0.3s ease"
-                    _hover={{ bg: "brand.golden", color: "black", transform: "translateY(-2px)" }}
-                  >
-                    Review Us on Google
-                  </Button>
-                </HStack>
-              </VStack>
-            </Box>
-          </VStack>
-        </Container>
-      </Box>
+      <GoogleReviews />
 
       {/* ═══════════ TRUST BADGES ═══════════ */}
       <Box as="section" py={{ base: 10, md: 14 }} bg="white">
