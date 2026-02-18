@@ -9,7 +9,6 @@ import Footer from "./components/Footer";
 import FloatingContact from "./components/FloatingContact";
 
 import ScrollToTop from "./components/ScrollToTop";
-import ScrollToTopButton from "./components/ScrollToTopButton";
 import ReactGA from "react-ga4";
 
 import PageWrapper from "./components/PageWrapper";
@@ -70,7 +69,6 @@ function RouterContent() {
 
         </AnimatePresence>
       </Box>
-      <ScrollToTopButton />
       <FloatingContact />
       <Footer />
     </>

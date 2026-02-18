@@ -25,14 +25,13 @@ import {
   FaBuilding,
   FaSprayCan,
   FaStar,
-  FaQuoteLeft,
   FaPhone,
   FaArrowRight,
   FaCheckCircle,
-  FaUsers,
-  FaAward,
   FaMapMarkerAlt,
   FaHeart,
+  FaGoogle,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import SEO from "./SEO";
 
@@ -40,6 +39,9 @@ const MotionBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
     isValidMotionProp(prop) || shouldForwardProp(prop),
 });
+
+const GOOGLE_MAPS_URL =
+  "https://www.google.com/maps/place/Poopatrol/@34.2500741,-118.5220439,570m/data=!3m2!1e3!4b1!4m6!3m5!1s0xa8454316eaccb7c9:0x5514a013f85d05bb!8m2!3d34.2500741!4d-118.5194636!16s%2Fg%2F11xdtch__p";
 
 const whyChooseUs = [
   {
@@ -89,27 +91,6 @@ const services = [
   },
 ];
 
-const testimonials = [
-  {
-    name: "Sarah M.",
-    location: "Northridge",
-    rating: 5,
-    text: "Poo Patrol has been a lifesaver! My yard has never been cleaner. The team is always on time and so thorough. Highly recommend to any dog owner!",
-  },
-  {
-    name: "Carlos R.",
-    location: "Granada Hills",
-    rating: 5,
-    text: "We have three dogs and the backyard was a disaster. After just one visit, it was like a brand new yard. Now we're on the weekly plan and couldn't be happier.",
-  },
-  {
-    name: "Jennifer L.",
-    location: "Porter Ranch",
-    rating: 5,
-    text: "Professional, reliable, and affordable. They even deodorize our patio area. The kids can finally play outside without me worrying. Thank you Poo Patrol!",
-  },
-];
-
 const serviceAreas = [
   "Northridge", "Granada Hills", "Chatsworth", "Porter Ranch",
   "Encino", "Tarzana", "Woodland Hills", "Reseda",
@@ -117,10 +98,10 @@ const serviceAreas = [
 ];
 
 const trustBadges = [
-  { icon: FaUsers, label: "500+ Happy Customers" },
-  { icon: FaStar, label: "5-Star Rated" },
+  { icon: FaStar, label: "5.0 Google Rating" },
   { icon: FaShieldAlt, label: "Licensed & Insured" },
   { icon: FaHeart, label: "Locally Owned" },
+  { icon: FaLeaf, label: "Eco-Friendly" },
 ];
 
 const HomePage: React.FC = () => {
@@ -220,7 +201,7 @@ const HomePage: React.FC = () => {
                 ))}
               </HStack>
               <Text color="whiteAlpha.800" fontSize="sm" fontWeight="medium">
-                Trusted by 500+ pet owners across the San Fernando Valley
+                5.0 rated on Google — Northridge, San Fernando Valley
               </Text>
             </HStack>
           </VStack>
@@ -336,17 +317,17 @@ const HomePage: React.FC = () => {
                 color="gray.700"
               >
                 Founded in 2024, Poo Patrol was built to make life easier for dog owners
-                across the San Fernando Valley. We serve countless communities and ensure
+                across the San Fernando Valley. We serve multiple communities and ensure
                 each yard is left fresh and clean. Our professional team is fully trained,
                 vetted, and passionate about giving you a yard you can enjoy.
               </Text>
               <HStack spacing={8} pt={2}>
                 <VStack spacing={0}>
                   <Text fontSize="2xl" fontWeight="bold" color="brand.brightGreen">
-                    500+
+                    5.0
                   </Text>
                   <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-                    Happy Customers
+                    Google Rating
                   </Text>
                 </VStack>
                 <VStack spacing={0}>
@@ -359,10 +340,10 @@ const HomePage: React.FC = () => {
                 </VStack>
                 <VStack spacing={0}>
                   <Text fontSize="2xl" fontWeight="bold" color="brand.darkGreen">
-                    5.0
+                    100%
                   </Text>
                   <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-                    Star Rating
+                    Eco-Friendly
                   </Text>
                 </VStack>
               </HStack>
@@ -458,10 +439,10 @@ const HomePage: React.FC = () => {
         </Container>
       </Box>
 
-      {/* ═══════════ TESTIMONIALS ═══════════ */}
+      {/* ═══════════ GOOGLE REVIEWS ═══════════ */}
       <Box as="section" py={{ base: 16, md: 24 }} bg="gray.50">
-        <Container maxW="7xl">
-          <VStack spacing={4} mb={14} textAlign="center">
+        <Container maxW="5xl">
+          <VStack spacing={6} textAlign="center">
             <Text
               color="brand.brightGreen"
               fontWeight="bold"
@@ -469,72 +450,95 @@ const HomePage: React.FC = () => {
               letterSpacing="wider"
               fontSize="sm"
             >
-              Testimonials
+              Customer Reviews
             </Text>
             <Heading
               as="h2"
               size={{ base: "xl", md: "2xl" }}
               color="brand.darkBrown"
             >
-              What Our Customers Say
+              See What Our Customers Say on Google
             </Heading>
-          </VStack>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-            {testimonials.map((t) => (
-              <Box
-                key={t.name}
-                bg="white"
-                p={8}
-                rounded="2xl"
-                shadow="lg"
-                position="relative"
-                transition="all 0.3s ease"
-                _hover={{ transform: "translateY(-4px)", shadow: "xl" }}
-              >
-                <Icon
-                  as={FaQuoteLeft}
-                  w={8}
-                  h={8}
-                  color="brand.lightGreen"
-                  position="absolute"
-                  top={4}
-                  right={6}
-                  opacity={0.5}
-                />
-                <HStack spacing={1} mb={4}>
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Icon key={i} as={FaStar} color="brand.golden" w={5} h={5} />
-                  ))}
+
+            {/* Google Rating Card */}
+            <Box
+              bg="white"
+              rounded="2xl"
+              shadow="xl"
+              p={{ base: 8, md: 12 }}
+              maxW="600px"
+              w="full"
+              border="1px solid"
+              borderColor="gray.100"
+              transition="all 0.3s ease"
+              _hover={{ shadow: "2xl", transform: "translateY(-4px)" }}
+            >
+              <VStack spacing={5}>
+                <Icon as={FaGoogle} w={10} h={10} color="#4285F4" />
+                <HStack spacing={2}>
+                  <Text fontSize="5xl" fontWeight="800" color="brand.darkBrown" lineHeight={1}>
+                    5.0
+                  </Text>
+                  <VStack spacing={0} align="start">
+                    <HStack spacing={1}>
+                      {[...Array(5)].map((_, i) => (
+                        <Icon key={i} as={FaStar} color="brand.golden" w={5} h={5} />
+                      ))}
+                    </HStack>
+                    <Text fontSize="sm" color="gray.500" fontWeight="medium">
+                      on Google Maps
+                    </Text>
+                  </VStack>
                 </HStack>
-                <Text color="gray.700" lineHeight={1.8} mb={6} fontStyle="italic">
-                  "{t.text}"
+                <Text color="gray.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.7}>
+                  Our customers love us! Check out our reviews on Google to see
+                  why pet owners across the San Fernando Valley trust Poo Patrol
+                  for their yard cleanup needs.
                 </Text>
-                <Flex align="center" gap={3}>
-                  <Box
-                    w={10}
-                    h={10}
+                <HStack
+                  spacing={4}
+                  pt={2}
+                  flexWrap="wrap"
+                  justify="center"
+                >
+                  <Button
+                    as="a"
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     bg="brand.brightGreen"
-                    rounded="full"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
+                    color="white"
+                    size="lg"
+                    px={8}
+                    fontWeight="bold"
+                    leftIcon={<FaGoogle />}
+                    rightIcon={<FaExternalLinkAlt />}
+                    transition="all 0.3s ease"
+                    _hover={{ bg: "brand.darkGreen", transform: "translateY(-2px)", boxShadow: "lg" }}
                   >
-                    <Text color="white" fontWeight="bold" fontSize="sm">
-                      {t.name.charAt(0)}
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold" color="brand.darkBrown" fontSize="sm">
-                      {t.name}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500">
-                      {t.location}
-                    </Text>
-                  </Box>
-                </Flex>
-              </Box>
-            ))}
-          </SimpleGrid>
+                    Read Our Reviews
+                  </Button>
+                  <Button
+                    as="a"
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="outline"
+                    borderColor="brand.golden"
+                    color="brand.golden"
+                    size="lg"
+                    px={8}
+                    fontWeight="bold"
+                    leftIcon={<FaStar />}
+                    transition="all 0.3s ease"
+                    _hover={{ bg: "brand.golden", color: "black", transform: "translateY(-2px)" }}
+                  >
+                    Review Us on Google
+                  </Button>
+                </HStack>
+              </VStack>
+            </Box>
+          </VStack>
         </Container>
       </Box>
 
@@ -632,7 +636,7 @@ const HomePage: React.FC = () => {
               fontSize={{ base: "lg", md: "xl" }}
               maxW="500px"
             >
-              Join hundreds of happy pet owners across the San Fernando Valley. Book your first cleanup today!
+              Pet owners across the San Fernando Valley trust us. Book your first cleanup today!
             </Text>
             <HStack spacing={4} flexWrap="wrap" justify="center">
               <Button
